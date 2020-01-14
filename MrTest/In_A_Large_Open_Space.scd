@@ -2,7 +2,7 @@
 // copy paste this code into a new window, go from there
 // save interesting snippets of code in a new file (extension .scd)
 (
-Ndef(\test).fadeTime = 12;
+Ndef(\test).fadeTime = 33;
 Ndef(\test, {
 	var snd, env;
 	// you can comment out one env line and uncomment the other to use it

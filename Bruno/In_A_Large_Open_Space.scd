@@ -1,4 +1,4 @@
-// changing this file from Tanya's laptop
+// changing this file from Tanya's laptop NOW
 // basic example
 // copy paste this code into a new window, go from there
 // save interesting snippets of code in a new file (extension .scd)

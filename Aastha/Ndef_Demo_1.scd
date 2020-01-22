@@ -41,8 +41,8 @@ Ndef(\a).fadeTime = 2; // run this, then go back to the block of code above and 
 Ndef(\a).fadeTime = 0;
 Ndef(\a, {
 	var harmonic, snd, dur;
-	dur = 1.5;
-	harmonic = 2; // change this number, anything between 1 to 32.
+	dur = 3.5;
+	harmonic = [0.99, 1, 1.01]; // change this number, anything between 1 to 32.
 	snd = SinOsc.ar(
 		freq: 43 * harmonic * Line.kr(start: 1, end: 0.5, dur: dur),
 		//mul: Env.triangle(dur: 0.2, level: 0.4).kr // an automatic up and down in volume (triangle shape),, env.perc is another option
@@ -50,7 +50,7 @@ Ndef(\a, {
 			attackTime: 0.01,
 			releaseTime: dur,
 			level: 1.0,
-			curve: -4
+			curve: 4
 		).kr
 	);
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line

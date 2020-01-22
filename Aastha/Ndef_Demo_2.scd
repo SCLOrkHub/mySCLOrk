@@ -4,7 +4,7 @@
 
 // BUT.... same oscillators can be used anywhere else (freq or mul) to *control* the main oscillator.
 
-// The important thing is to define good values for .range !!!!!
+// The important thing is to define good values for .range !!!!! 30-10,000 frequencies midicps (cip per second)
 
 // for amplitude (mul), keep it between 0.0 and 1.0 (or less)
 
@@ -14,19 +14,20 @@
 
 // the freq of the controller is the speed of the 'effect'
 
+SCLOrkChat.new("aastha");
 
 // choose your fadeTime (you can change this anytime):
 Ndef(\a).fadeTime = 1;
 
 
-// Example 1: SinOsc controlling mul:
+// Example 1: SinOsc controlling mul:, i changed this one!!
 (
 Ndef(\a, {
 	var harmonic, snd;
-	harmonic = 7;
+	harmonic = 90;
 	snd = SinOsc.ar(
-		freq: 43 * harmonic,
-		mul: SinOsc.ar(2).range(0.0, 0.5)
+		freq: harmonic,
+		mul: LFPulse.ar(MouseX.kr(1,10)).range(0.0, 0.5)
 	);
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
 }).play;
@@ -37,7 +38,7 @@ Ndef(\a, {
 Ndef(\a, {
 	var harmonic, snd;
 	// round numbers to ensure integers only:
-	harmonic = SinOsc.ar(1/5).range(3, 13).round(1);
+	harmonic = SinOsc.ar(1/5).range(1.99, 2.004);
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
 		mul: 0.4
@@ -66,7 +67,7 @@ Ndef(\a, {
 Ndef(\a, {
 	var harmonic, snd;
 	// round numbers to ensure integers only:
-	harmonic = Line.ar(20, 5, 5).round(1);
+	harmonic = Line.ar(20, 7, 5).round(1);
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
 		mul: 0.4
@@ -97,7 +98,7 @@ Ndef(\a, {
 	harmonic = 6;
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
-		mul: SinOsc.ar(MouseX.kr(1, 44)).range(0.0, 0.5)
+		mul: SinOsc.ar(MouseX.kr(1, 44)).range(0.0, 0.5)//really fast: amplitude modulation
 	);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;

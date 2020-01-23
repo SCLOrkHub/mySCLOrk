@@ -21,14 +21,12 @@ SCLOrkClock.startSync;
 )
 
 (
-Pbindef(\ha).quant = 0;
-Pbindef(\ha,
+Pbindef(\a,
 	\instrument, "harpsichord1",
-	\dur, 3,
-	\freq2, 977 * [1, 1.5],
-	\midinote, 24 + Prand([0, 7], inf) + [0, 24, 26, 30, 37],
-	\amp, Pwhite(0.1, 0.4)
-).play(~clock, quant: 0)
+	\dur, 1/8,
+	\degree, Pseq([-9, 1, 2, 4, 8, 9], inf),
+	\amp, 0.1
+).play(~clock, quant: 4)
 )
 
 

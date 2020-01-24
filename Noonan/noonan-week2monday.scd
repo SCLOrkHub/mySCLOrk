@@ -59,9 +59,12 @@ Ndef(\wow).fadeTime = 0;
 Ndef(\wow, {
 	var snd;
 	snd = Pulse.ar(
-		freq: 32 * [8 + SinOsc.ar(1).range(-40, 40), 7 + SinOsc.ar(1).range(-20, 20), 6 + SinOsc.ar(1).range(-10, 10), 5 + SinOsc.ar(1).range(-5, 5), 4 + SinOsc.ar(1).range(-2.5, 2.5), 1 + SinOsc.ar(1).range(-1.25, 1.25)],
+		freq: MouseY.kr(10, 500) * [8 + SinOsc.ar(1).range(-40, 40), 7 + SinOsc.ar(1).range(-20, 20), 6 + SinOsc.ar(1).range(-10, 10), 5 + SinOsc.ar(1).range(-5, 5), 4 + SinOsc.ar(1).range(-2.5, 2.5), 1 + SinOsc.ar(1).range(-1.25, 1.25)],
 		mul: LFPulse.ar(10).range(0, 0.5)
 	);
+
+	snd = LPF.ar(snd, MouseX.kr(200, 5000));
+
 	snd = Limiter.ar(Mix.ar(snd))
 }).play;
 )

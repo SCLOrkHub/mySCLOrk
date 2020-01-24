@@ -79,7 +79,7 @@ Ndef(\a, {
 Ndef(\a, {
 	var harmonic, snd;
 	// round numbers to ensure integers only:
-	harmonic = Line.ar(20, 5, 5).round(1);
+	harmonic = Line.ar(20, 5, 0).round(1);
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
 		mul: 0.4

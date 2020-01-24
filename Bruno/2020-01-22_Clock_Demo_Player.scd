@@ -20,7 +20,7 @@ metadata: (
 (
 OSCdef(\startClock, { |msg|
 	msg.postln;
-	// turn it on at bpm
+	// turn it on  at bpm
 	if(msg[1]==\on, {
 		~clock = TempoClock.new(msg[2]/60).permanent_(true)
 	});

@@ -22,10 +22,23 @@ Ndef(\randomname).stop;
 //var symbolizes beginning of creation
 
 (
+Ndef(\heckya, {
+	var harmonic, snd;
+
+	harmonic = 3;
+	snd = LFPulse.ar(
+		freq: 110 * harmonic,
+		mul: 0.2
+	);
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+)
+
+(
 Ndef(\a, {
 	var harmonic, snd;
 	harmonic = 7; // change this number, anything between 1 to 32, then control + enter
-	snd = SinOsc.ar(
+	snd = LFSaw.ar(
 		freq: 43 * harmonic,
 		mul: 0.4 // you can also change the volume here
 	);
@@ -49,7 +62,7 @@ Ndef(\a, {
 	harmonic = 17; // change this number, anything between 1 to 32.
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
-		mul: Env.triangle(dur: 15, level: 0.4).kr // an automatic up and down in volume (triangle shape)
+		mul: Env.triangle(dur: 15, level: 0.6).kr // an automatic up and down in volume (triangle shape)
 	);
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
 }).play;

@@ -26,7 +26,7 @@ Ndef(\a, {
 	harmonic = 7;
 	snd = SinOsc.ar(
 		freq: SinOsc.ar(1). range(60, 72).midicps.round(100),
-		mul: SinOsc.ar(2).range(0.0, 0.5)
+		mul: SinOsc.ar(99).range(0.0, 0.5)
 	);
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
 }).play;
@@ -110,7 +110,7 @@ Ndef(\a, {
 	var harmonic, snd;
 	// round numbers to ensure integers only:
 	harmonic = [6, 6.1, 9]; // three partials at same time
-	snd = SinOsc.ar(
+	snd = Pulse.ar(
 		freq: 43 * harmonic,
 		mul: 0.3
 	);

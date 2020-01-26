@@ -1,16 +1,18 @@
 SCLOrkChat.new("aastha");
 
-/*Pbind(\degree, 0).play;
+Pbind(\degree, 0).play;
 
+(
 Pbind(
 	\degree, Pslide([1,2,5,4],7,3,1),
 	\dur, 2
-	\amp,
-).play;*/
+	\amp, 3
+).play;
+)
 
 //Scale.directory //use this to tell you what directories you have
 
-/*(
+(
 Pbindef(\patterntest,
 	// \instrument, "bagpipe",
 	//\midinote, Pwhite(60, 72),
@@ -24,6 +26,6 @@ Pbindef(\patterntest,
 
 )
 
-Pbindef(\patterntest).stop;*/
+Pbindef(\patterntest).stop;
 
 

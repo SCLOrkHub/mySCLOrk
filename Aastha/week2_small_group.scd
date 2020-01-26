@@ -107,7 +107,7 @@ Ndef(\snare, {
         in: WhiteNoise.ar,
         freq: 1800
     );
-    snd2 = SinOsc.ar(freq: 180);
+	snd2 = SinOsc.ar(freq: 180);
     sum = snd1 + snd2;
     sum = sum * env;
     sum=Limiter.ar(Mix.ar(sum));

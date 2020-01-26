@@ -36,13 +36,14 @@ metadata: (
 (
 Pbindef(\melody1, // << this is the NAME of this unique Pbindef
 	\instrument, "harpsy",
-	\dur, 1,
+	\dur, 0.7,
 	\amp, 0.5,
-	\degree, Pseq([6, 1, 2, 3], inf),
+	\degree, Pseq([-10, -10, -10, -10], inf) - 6,
 	\rel, 0.25
 ).play(~clock, quant: 4).quant = 4;
 )
 
+Pbindef(\melody1, \rel, 0.7);
 Pbindef(\melody1).stop;
 
 
@@ -51,7 +52,7 @@ Pbindef(\melody2,
 	\instrument, "harpsy",
 	\dur, 1,
 	\amp, 0.15,
-	\degree, Pseq([1, 0, 2, 0], inf) - 7,
+	\degree, Pshuf([1, 0, 2, 0], inf),
 	\rel, 3
 ).play(~clock, quant: 4).quant = 4;
 )
@@ -98,10 +99,10 @@ Pbindef(\faster2).stop;
 (
 Pbindef(\pachs,
 	\instrument, "harpsy",
-	\dur, 1/2,
+	\dur, 1,
 	\amp, 0.45,
 	\degree, Pseq([3, 0, 1, -2, -1b, -4, -1b, 0], inf),
-	\mtranspose, -7,
+	\mtranspose, -10,
 	\rel, 3
 ).play(~clock, quant: 4).quant = 4;
 )

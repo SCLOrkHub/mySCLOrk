@@ -156,10 +156,12 @@ Ndef(\a, {
 	var harmonic, snd;
 	// try out LFNoise1 and LFNoise2 as well:
 	harmonic = LFNoise0.kr(7).range(2, 19).round(1); // two harmonics at same time
-	snd = SinOsc.ar(
+	snd = Saw.ar(
 		freq: 43 * harmonic,
 		mul: 0.4
-	);
+	).clip;
+
+	BPF.ar(snd, 400, 0.5);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;
 )

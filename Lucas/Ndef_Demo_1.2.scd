@@ -29,7 +29,7 @@ Ndef(\a, {
 	var harmonic, snd;
 	harmonic = 7;
 	snd = SinOsc.ar(
-		freq: 43 * harmonic,
+		freq: SinOsc.ar(1/2).range(30, 72).midicps.round(50),
 		mul: SinOsc.ar(2).range(0.0, 0.5)
 	);
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
@@ -114,7 +114,7 @@ Ndef(\a, {
 Ndef(\a, {
 	var harmonic, snd;
 	// round numbers to ensure integers only:
-	harmonic = [rrand(1, 15), rrand(1, 15), rrand]; // three partials at same time
+	harmonic = [6, 6.1, 9]; // three partials at same time
 	snd = SawDPW.ar(
 		freq: 43 * harmonic,
 		mul: 0.3
@@ -164,13 +164,13 @@ Ndef(\a, {
 Ndef(\a, {
 	var harmonic, snd;
 	// try out LFNoise1 and LFNoise2 as well:
-	harmonic = LFNoise0.kr(5).range(1, 8).round(1); // two harmonics at same time
+	harmonic = LFNoise0.kr(SinOsc.ar(1).range(1, 50)).range(1, 15).round(1); // two harmonics at same time
 	snd = Saw.ar(
 		freq: 43 * harmonic,
 		mul: 0.4
 	);
-	snd = Fold.ar(Fold.ar(snd, 1, 3), 2, 5);
-	snd = BHiPass.ar(snd);
+	snd = Fold.ar(Fold.ar(snd, 4, 3), 9, 5);
+	//snd = BHiPass.ar(snd);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;
 )
@@ -201,8 +201,12 @@ Ndef(\thing, {
 (
 Ndef(\thing, {
 	var snd;
-	snd = LFTri.ar(freq: MouseX.kr(100, 1000) * SinOsc.ar(MouseY.kr(100, 1000)).range(1, 2), mul: 0.4);
+	snd = LFTri.ar(freq: MouseX.kr(100, 1000) * SinOsc.ar(MouseY.kr(100, 1000)).range(1, 2), mul: 0.1);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;
 )
+// -- end of copied code
+
+// ++ code copied from bruno
+Ndef(\a).clear(10);
 // -- end of copied code

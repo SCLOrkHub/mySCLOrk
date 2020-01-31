@@ -1,3 +1,15 @@
+SCLOrkChat.new("Lucas");
+
+
+(
+Pbindef(\test,
+	\degree, Pseq([-12, -8, -7, -5, -8, -7], inf),
+	\dur, 0.2,
+	\amp, 1,
+	\legato, 0.1
+).play;
+)
+
 // ==================================
 // Sync *without* SCLOrkClock
 //
@@ -47,6 +59,8 @@ path: 'metronome'
 
 
 
+
+// CONDUCTOR PART
 // ==================================
 // Sync *without* SCLOrkClock
 //
@@ -71,22 +85,22 @@ path: 'metronome'
 };
 
 ~destinationList =  [
-	// "sclork-01.local",
-	// "sclork-02.local",
-	// "sclork-03.local",
-	// "sclork-04.local",
-	// "sclork-05.local",
-	// "sclork-06.local",
-	// "sclork-07.local",
-	// "sclork-08.local",
-	// "sclork-09.local",
-	// "sclork-10.local",
+	"sclork-01.local",
+	"sclork-02.local",
+	"sclork-03.local",
+	"sclork-04.local",
+	"sclork-05.local",
+	"sclork-06.local",
+	"sclork-07.local",
+	"sclork-08.local",
+	"sclork-09.local",
+	"sclork-10.local",
 	"sclork-11.local",
 	"sclork-12.local",
-	// "sclork-13.local",
-	// "sclork-14.local",
+	"sclork-13.local",
+	"sclork-14.local",
 	"sclork-15.local",
-	// "sclork-16.local"
+	"sclork-16.local"
 ].collect({ |hostname| ~tryHostname.value(hostname) });
 )
 
@@ -97,7 +111,7 @@ path: 'metronome'
 
 // START METRONOMES (you can pick a BPM other than 60 if you like)
 (
-var bpm = 80;
+var bpm = 60;
 ~destinationList.do({ |ip|
 	if(ip.notNil, {
 		ip.sendMsg('metronome', \on, bpm); // message to connected

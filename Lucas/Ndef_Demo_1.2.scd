@@ -1,5 +1,9 @@
+SCLOrkChat.new("Lucas");
+
+
+// ++ code copied from josh
 // TECHNIQUES TO TRY:
-SCLOrkChat("Harrison").new
+
 // SinOsc can be replaced with LFTri, LFSaw, Saw, Pulse, LFPulse, etc -- to get a different TIMBRE.
 
 // BUT.... same oscillators can be used anywhere else (freq or mul) to *control* the main oscillator.
@@ -25,8 +29,8 @@ Ndef(\a, {
 	var harmonic, snd;
 	harmonic = 7;
 	snd = SinOsc.ar(
-		freq: SinOsc.ar(1). range(60, 72).midicps.round(100),
-		mul: SinOsc.ar(99).range(0.0, 0.5)
+		freq: SinOsc.ar(1/2).range(30, 72).midicps.round(50),
+		mul: SinOsc.ar(2).range(0.0, 0.5)
 	);
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
 }).play;
@@ -37,7 +41,7 @@ Ndef(\a, {
 Ndef(\a, {
 	var harmonic, snd;
 	// round numbers to ensure integers only:
-	harmonic = SinOsc.ar(1/5).range(3, 13).round(1);
+	harmonic = SinOsc.ar(1/2).range(1, 19).round(1);
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
 		mul: 0.4
@@ -51,14 +55,15 @@ Ndef(\a, {
 Ndef(\a, {
 	var harmonic, snd;
 	// round numbers to ensure integers only:
-	harmonic = LFPulse.ar(3).range(3, 13).round(1);
+	harmonic = LFPulse.ar(2).range(2, 13).round(1);
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
-		mul: LFPulse.ar(2).range(0.1, 0.3)
+		mul: Slew.ar(LFPulse.ar(2).range(0.1, 0.3), 100, 100);
 	);
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
 }).play;
 )
+
 
 // Example 4: Line.ar(start, end, dur)
 // Line does its job once, then stays at end value
@@ -110,7 +115,7 @@ Ndef(\a, {
 	var harmonic, snd;
 	// round numbers to ensure integers only:
 	harmonic = [6, 6.1, 9]; // three partials at same time
-	snd = Pulse.ar(
+	snd = SawDPW.ar(
 		freq: 43 * harmonic,
 		mul: 0.3
 	);
@@ -139,7 +144,7 @@ Ndef(\a, {
 Ndef(\a, {
 	var harmonic, snd;
 	// try out LFNoise1 and LFNoise2 as well:
-	harmonic = LFNoise0.kr(7).range(2, 19).round(1); // two harmonics at same time
+	harmonic = LFNoise0.kr(7).range(2, 19); // two harmonics at same time
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
 		mul: 0.4
@@ -148,34 +153,60 @@ Ndef(\a, {
 }).play;
 )
 
-// ++ code copied from bruno
+// -- end of copied code
+
+// ++ code copied from josh
+
+// -- end of copied code
+
+// ++ code copied from josh
 (
 Ndef(\a, {
 	var harmonic, snd;
 	// try out LFNoise1 and LFNoise2 as well:
-	harmonic = LFNoise1.kr(10).range(7, 20).round(1); // two harmonics at same time
+	harmonic = LFNoise0.kr(SinOsc.ar(1).range(1, 50)).range(1, 15).round(1); // two harmonics at same time
 	snd = Saw.ar(
-		freq: 40 * harmonic,
-		mul: Pulse.ar(MouseX.kr(1, 40)).range(0, 0.1)
+		freq: 43 * harmonic,
+		mul: 0.4
 	);
+	snd = Fold.ar(Fold.ar(snd, 4, 3), 9, 5);
+	//snd = BHiPass.ar(snd);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;
 )
 // -- end of copied code
 
-
-// ++ code copied from bruno
+// ++ code copied from josh
 (
-Ndef(\a, {
-	var harmonic, snd;
-	// try out LFNoise1 and LFNoise2 as well:
-	harmonic = LFNoise2.kr(1/9).range(12, 36).round(1); // two harmonics at same time
-	snd = LFSaw.ar(
-		freq: 10 * harmonic,
-		mul: LFPulse.ar(MouseX.kr(1, 40)).range(0.1, 0.5)
-	);
-	snd = LPF.ar(snd, 1400).distort.distort;
+Ndef(\thing, {
+	var snd;
+	snd = PMOsc.ar(carfreq: MouseX.kr(100, 1000), modfreq: MouseY.kr(100, 1000), pmindex: 5, mul: 0.4);
+	snd = Dust.ar(1);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;
 )
+// -- end of copied code
+
+// ++ code copied from josh
+(
+Ndef(\thing, {
+	var snd;
+	snd = LFTri.ar(freq: MouseX.kr(100, 1000), iphase: SinOsc.ar(MouseX.kr(100, 1000)).range(0, 4), mul: 0.4);
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+)
+// -- end of copied code
+
+// ++ code copied from josh
+(
+Ndef(\thing, {
+	var snd;
+	snd = LFTri.ar(freq: MouseX.kr(100, 1000) * SinOsc.ar(MouseY.kr(100, 1000)).range(1, 2), mul: 0.1);
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+)
+// -- end of copied code
+
+// ++ code copied from bruno
+Ndef(\a).clear(10);
 // -- end of copied code

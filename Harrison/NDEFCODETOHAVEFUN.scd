@@ -1,25 +1,5 @@
-// TECHNIQUES TO TRY:
 SCLOrkChat("Harrison").new
-// SinOsc can be replaced with LFTri, LFSaw, Saw, Pulse, LFPulse, etc -- to get a different TIMBRE.
 
-// BUT.... same oscillators can be used anywhere else (freq or mul) to *control* the main oscillator.
-
-// The important thing is to define good values for .range !!!!!
-
-// for amplitude (mul), keep it between 0.0 and 1.0 (or less)
-
-// for harmonic, anything between 1-32 or less
-
-// for direct freq control, anything audible (20 to 20000 or less)
-
-// the freq of the controller is the speed of the 'effect'
-
-
-// choose your fadeTime (you can change this anytime):
-Ndef(\a).fadeTime = 1;
-
-
-// Example 1: SinOsc controlling mul:
 (
 Ndef(\a, {
 	var harmonic, snd;
@@ -32,19 +12,6 @@ Ndef(\a, {
 }).play;
 )
 
-// Example 2: SinOsc controlling harmonic #
-(
-Ndef(\a, {
-	var harmonic, snd;
-	// round numbers to ensure integers only:
-	harmonic = SinOsc.ar(1/5).range(3, 13).round(1);
-	snd = SinOsc.ar(
-		freq: 43 * harmonic,
-		mul: 0.4
-	);
-	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
-}).play;
-)
 
 // Example 3: one LFPulse controlling harmonic, another controlling mul
 (
@@ -132,20 +99,6 @@ Ndef(\a, {
 }).play;
 )
 
-
-// Example 9: The joys of LFNoise: LFNoise0 picks random numbers and jumps to them directly. LFNoise1 does almost the same, but interpolates linearly between numbers. LFNoise2 interpolates logarithmically. They can be plugged pretty much anywhere.
-
-(
-Ndef(\a, {
-	var harmonic, snd;
-	// try out LFNoise1 and LFNoise2 as well:
-	harmonic = LFNoise0.kr(7).range(2, 19).round(1); // two harmonics at same time
-	snd = SinOsc.ar(
-		freq: 43 * harmonic,
-		mul: 0.4
-	);
-	snd = Limiter.ar(Mix.ar(snd));
-}).play;
 )
 
 // ++ code copied from bruno
@@ -175,6 +128,145 @@ Ndef(\a, {
 		mul: LFPulse.ar(MouseX.kr(1, 40)).range(0.1, 0.5)
 	);
 	snd = LPF.ar(snd, 1400).distort.distort;
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+)
+// -- end of copied code
+
+
+
+
+
+
+// ++ code copied from bruno
+(
+Ndef(\test).fadeTime = 1;
+Ndef(\test, {
+	var snd, freq, harmonic;
+	harmonic = Sin.kr(1/26).range(5, 10).round(1);
+	freq = 43 * harmonic;
+
+	snd = SinOsc.ar(
+		freq: freq,
+		mul: Env.triangle(dur: 10).kr;
+	);
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+)
+// -- end of copied code
+
+// ++ code copied from bruno
+(
+Ndef(\test).fadeTime = 1;
+Ndef(\test, {
+	var snd, freq;
+	freq = 43 * 3;
+
+	snd = .ar(
+		freq: freq,
+		mul: Env.triangle(dur: 10).kr;
+	);
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+)
+// -- end of copied code
+
+// ++ code copied from bruno
+(
+Ndef(\test).fadeTime = 1;
+Ndef(\test, {
+	var snd, freq, harmonic;
+	harmonic = SinOsc.kr(2).range(5, 6).round(1);
+	freq = 10 * harmonic;
+
+	snd = Pulse.ar(
+		freq: freq,
+		mul: Env.triangle(dur: 10).kr;
+	);
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+)
+// -- end of copied code
+(
+Ndef(\test).fadeTime = 1;
+Ndef(\test, {
+	var snd, freq, harmonic;
+	harmonic = SinOsc.kr(2).range(5, 6).round(1);
+	freq = 10 * harmonic;
+
+	snd = Pulse.ar(
+		freq: freq,
+		mul: Env.triangle(dur: 10).kr;
+	);
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+
+
+// ++ code copied from bruno
+(
+Ndef(\test).fadeTime = 0;
+Ndef(\test, {
+	var snd, freq;
+	freq = 43 * 3;
+
+	snd = SinOsc.ar(
+		freq: freq,
+		mul: LFSaw.ar(3).range(0, 1);
+	);
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+)
+// -- end of copied code
+
+
+
+// ++ code copied from aastha
+(
+Ndef(\test).fadeTime = 1;
+Ndef(\test, {
+	var snd, freq;
+	var harmonic = [50, 51, 49] * 3;
+	freq = harmonic * Pulse.ar(1/6).range(0.1, 0.8);
+
+	snd = LFPulse.ar(
+		freq: freq,
+		//mul: Env.triangle(dur: 25).kr; // stops automatically after 20 seconds
+		mul: Pulse.ar(1).range(0.1, 0.5)
+	);
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+)
+// -- end of copied code
+
+// ++ code copied from bruno
+(
+Ndef(\test).fadeTime = 0;
+Ndef(\test, {
+	var snd, freq;
+	freq = 43 * rrand(2, 7);
+
+	snd = LFSaw.ar(
+		freq: freq,
+		mul: LFSaw.ar(3).range(0, 1);
+	);
+	snd = LPF.ar(snd, LFNoise0.ar(16).range(500, 5000));
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+)
+// -- end of copied code
+
+// ++ code copied from bruno
+(
+Ndef(\test).fadeTime = 0;
+Ndef(\test, {
+	var snd, freq;
+	freq = 43 * SinOsc.ar(1).range(2, 10).round(1) * [1, 1.001];
+
+	snd = LFSaw.ar(
+		freq: freq,
+		mul: LFSaw.ar(3).range(0, 1);
+	);
+	snd = LPF.ar(snd, LFNoise0.ar(16).range(500, 5000));
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;
 )

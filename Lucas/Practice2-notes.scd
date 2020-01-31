@@ -25,7 +25,7 @@ Ndef(\latchTime, {
 });
 
 Ndef(\stretch, {
-	4
+	7
 });
 
 Ndef(\ctrl1, {
@@ -37,16 +37,17 @@ Ndef(\ctrl1, {
 Ndef(\thing, {
 	var snd, env, array;
 	array = Array.exprand(13, 2, 20);
-	env = Dust.ar(3);
+	env = Dust.ar(10);
 	snd = DynKlank.ar(`[
 		array;
 		nil,
 		1/array],
 	input: env,
 	freqscale: Ndef(\ctrl1),
-	decayscale: 0.1);
+	decayscale: 2);
 	snd = Limiter.ar(Mix.ar(LeakDC.ar((snd * 5).tanh)));
 	snd = LeakDC.ar(snd);
+	Out.ar(0, snd ! 2);
 }).play;
 )
 // -- end of copied code

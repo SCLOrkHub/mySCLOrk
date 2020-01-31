@@ -656,6 +656,7 @@ SynthDef("raygun", {arg amp = 0.5, sinfreq = 400, glissf = 0.0001, att = 0.01, r
     var gliss = XLine.kr(sinfreq, sinfreq*glissf, rel);
     var snd = SinOsc.ar(gliss).clip.clip;
     var env = EnvGen.kr(Env.perc(att, rel), doneAction: 2);
+
     snd = snd * env * amp;
 	snd = Pan2.ar(snd, pan);
     Out.ar(0, snd);

@@ -10,7 +10,7 @@ SinOsc.ar.play
 Ndef(\wow).fadeTime = 1;
 Ndef(\wow, {
 	var snd;
-	snd = SinOsc.ar(
+	snd = LFSaw.ar(
 		freq: 32*7+5,
 		mul: 0.1
 	);
@@ -24,9 +24,9 @@ Ndef(\wow, {
 Ndef(\wow).fadeTime = 1;
 Ndef(\wow, {
 	var snd;
-	snd = SinOsc.ar(
-		freq: 32*5+7,
-		mul: LFTri.ar(freq: 1/10).range(0.1, 0.4)
+	snd = Pulse.ar(
+		freq: 13*5+7,
+		mul: LFSaw.ar(freq: 10).range(0.1, 0.3)
 	);
 	snd = Limiter.ar(Mix.ar(snd))
 }).play;
@@ -38,9 +38,9 @@ Ndef(\wow, {
 Ndef(\wow).fadeTime = 0;
 Ndef(\wow, {
 	var snd;
-	snd = SinOsc.ar(
-		freq: 32*rrand(20,32),
-		mul: LFTri.ar(freq: 1/7).range(0.1, 0.3)
+	snd = LFTri.ar(
+		freq: 20*rrand(10,44),
+		mul: LFSaw.ar(freq: 10).range(0.1, 0.3)
 	);
 	snd = Limiter.ar(Mix.ar(snd))
 }).play;
@@ -66,9 +66,9 @@ Ndef(\wow, {
 Ndef(\wow).fadeTime = 0;
 Ndef(\wow, {
 	var snd;
-	snd = .ar(
-		freq: 32 * rrand(1, 32),
-		mul: Env.perc(releaseTime: 3).kr
+	snd = Saw.ar(
+		freq: 32 * rrand(1, 2),
+		mul: Env.perc(releaseTime: 6).kr
 	);
 	snd = Limiter.ar(Mix.ar(snd))
 }).play;
@@ -77,12 +77,12 @@ Ndef(\wow, {
 
 // ++ code copied from bruno
 (
-Ndef(\wow).fadeTime = 0;
+Ndef(\wow).fadeTime = 3;
 Ndef(\wow, {
 	var snd;
 	snd = Pulse.ar(
-		freq: 32 * 12,
-		mul: LFSaw.ar(14).range(0, 0.5)
+		freq: 32 * rrand(1, 10),
+		mul: LFSaw.ar(12).range(0, 0.4)
 	);
 	snd = Limiter.ar(Mix.ar(snd))
 }).play;
@@ -96,7 +96,7 @@ Ndef(\wow, {
 	var snd;
 	snd = Pulse.ar(
 		freq: 32 * 12,
-		mul: LFSaw.ar(8).range(0, 0.5), MouseX.kr
+		mul: LFSaw.ar(8).range(0, 0.5), MouseX(1, 2).kr,
 	);
 	snd = Limiter.ar(Mix.ar(snd))
 }).play;
@@ -105,12 +105,12 @@ Ndef(\wow, {
 
 // ++ code copied from bruno
 (
-Ndef(\wow).fadeTime = 0;
+Ndef(\wow).fadeTime = 2;
 Ndef(\wow, {
 	var snd;
 	snd = Saw.ar(
-		freq: 32 * 6,
-		mul: LFSaw.ar(MouseX.kr(1, 7)).range(0, 0.5)
+		freq: 32 * 9,
+		mul: LFSaw.ar(MouseY.kr(1/29, 29)).range(0, 0.5)
 	);
 	snd = Limiter.ar(Mix.ar(snd))
 }).play;
@@ -123,11 +123,12 @@ Ndef(\wow).fadeTime = 0;
 Ndef(\wow, {
 	var snd;
 	snd = LFSaw.ar(
-		freq: 3 * 2 * Line.kr(10, 20, 0.5),
-		mul: LFTri.ar(2).range(0, 0.5)
+		freq: 3 * 2 * Line.kr(10, 20, 020),
+		mul: LFTri.ar(9).range(0, 0.5)
 	);
 	snd = Limiter.ar(Mix.ar(snd))
 }).play;
+
 )
 // -- end of copied code
 
@@ -137,8 +138,8 @@ Ndef(\wow).fadeTime = 0;
 Ndef(\wow, {
 	var snd;
 	snd = LFSaw.ar(
-		freq: 32 * Line.kr(24, 28, 32),
-		mul: LFSaw.ar(12).range(0, 0.5)
+		freq: 2 * Line.kr(24, 28, 2),
+		mul: LFSaw.ar(1).range(0, 0.5)
 	);
 	snd = Limiter.ar(Mix.ar(snd))
 }).play;
@@ -224,7 +225,7 @@ Ndef(\wow, {
 	var snd;
 	snd = Saw.ar(
 		freq: [1, 1.001, 0.99] * 43 * 1, // < let's finish on the tonic, 1 or 2 harmonic
-		mul: SinOsc.ar(1/9).range(0.001, 0.5)
+		mul: SinOsc.ar(1/20).range(0.001, 0.5)
 	);
 	snd = Limiter.ar(Mix.ar(snd))
 }).play;
@@ -232,5 +233,5 @@ Ndef(\wow, {
 // -- end of copied code
 
 // ++ code copied from bruno
-Ndef(\wow).clear(60);
+Ndef(\wow).clear(3);
 // -- end of copied code

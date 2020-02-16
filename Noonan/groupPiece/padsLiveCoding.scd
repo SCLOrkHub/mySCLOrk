@@ -12,7 +12,7 @@ SynthDef("Wobbly Organ", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pa
 	vibrato = SinOsc.kr(vibratoSpeed).range(vibratoAmount.neg, vibratoAmount);
 	midinote = (freq * harmonics).cpsmidi + vibrato;
 
-	snd = SinOsc.ar(freq: midinote.midicps, mul: (amplitudes*amp)*LFSaw.ar(2).range(0, 1));
+	snd = SinOsc.ar(freq: midinote.midicps, mul: (amplitudes*amp)*LFSaw.ar(5).range(0, 1));
 
 	snd = LPF.ar(
 		in: snd,
@@ -35,13 +35,13 @@ SynthDef("Wobbly Organ", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pa
 SynthDef("stringish", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pan = 0, gate = 1;
 	var snd, env, harmonics, amplitudes;
 
-	harmonics = [1/2, 1, 2, 3, 4, 5, 6];
-	amplitudes = [1/2, 1, 1/2, 1/3, 1/4, 1/5, 1/8];
+	harmonics = [1/4, 1/2, 1, 2, 3, 4, 5, 6];
+	amplitudes = [1/4, 1/2, 1, 1/2, 1/3, 1/4, 1/5, 1/8];
 
 	snd = LFTri.ar(
 		freq: freq*harmonics,
-		iphase: LFNoise0.ar(10),
-		mul: (amplitudes*amp+LFPulse.ar(8).range(-0.075, 0.075))*LFSaw.ar(3).range(0, 1)
+		iphase: LFNoise0.ar(20),
+		mul: (amplitudes*amp+LFPulse.ar(3).range(-0.075, 0.075))*LFSaw.ar(7).range(0, 1)
 	);
 
 	env = Env.asr(
@@ -88,8 +88,9 @@ Pbindef(\organ,
 	\amp, 0.5,
 	\pan, [-0.5, -0.25, 0, 0.25, 0.5]
 ).play(~clock, quant: 4).quant = 4;
+)
 
-
+(
 Pbindef(\pad,
 	\instrument, "stringish",
 	\dur, 16,

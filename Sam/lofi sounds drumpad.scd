@@ -24,7 +24,7 @@ s.boot;
 // There are two other drum kits in the folder that you can experiment with later.
 
 (
-~folder = "/home/sclork/Music/mySCLOrk/Sam/audio files for project" ;
+~folder = "/home/sclork/Downloads/audio files for project";
 // ~folder = "Audiophob";
 // ~folder = "TR808EmulationKit";
 // Load all sound files in that folder into Buffers

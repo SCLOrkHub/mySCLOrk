@@ -52,6 +52,15 @@ s.boot;
 ~samples[14].play;
 ~samples[15].play;
 ~samples[16].play;
+~samples[17].play;
+~samples[18].play;
+~samples[19].play;
+~samples[20].play;
+~samples[21].play;
+~samples[22].play;
+~samples[23].play;
+~samples[24].play;
+
 
 
 
@@ -101,12 +110,20 @@ Pbindef(\41,
 	\rate, 1
 ).play(~clock, quant: 4).quant = 4;
 
+Pbindef(\42,
+	\instrument, "playBuf",
+	\dur, 8,
+	\bufnum, ~samples[13],
+	\amp, 4,
+	\rate, 0.5
+).play(~clock, quant: 4).quant = 4;
+
 Pbindef(\37,
 	\instrument, "playBuf",
 	\dur, Pseq([Rest(1), 1], inf),
 	\bufnum, ~samples[2],
 	\amp, 0.5,
-	\rate, 1
+	\rate, 0.7
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\38,
@@ -120,20 +137,20 @@ Pbindef(\38,
 Pbindef(\39,
 	\instrument, "playBuf",
 	\dur, Prand([
-		Pseq([Rest(1/2), 1/2], 4),
+		Pseq([Rest(1), 1/2], 4),
 		Pshuf([Rest(0.5), 0.25, 0.25, Rest(0.5), 0.5, Rest(0.5), 0.5], 1)
 	], inf),
 	\bufnum, ~samples[15],
 	\amp, Pwhite(0.25, 0.5),
-	\rate, Pwrand([1, 2], [0.8, 0.2], inf)
+	\rate, Pwrand([-0.5, 0.5], 2, inf)
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\40,
 	\instrument, "playBuf",
 	\dur, Pseq([1/2], inf),
 	\bufnum, ~samples[6],
-	\amp, Pwhite(0.15, 0.3),
-	\rate, 1
+	\amp, Pwhite(0.4, 0.6),
+	\rate, Pwhite(-1.0, 1.0)
 ).play(~clock, quant: 4).quant = 4;
 )
 

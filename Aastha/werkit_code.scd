@@ -31,8 +31,13 @@ SynthDef("werkit", {
 Pbindef(\werkit,
 	\instrument, "werkit",
 	\amp, Pwhite(0.05, 0.1),
-	\note, Pseq([-1, 1, -1, 1, 3, 6, 9, 11, 12, 15, 17, 18, 19, 20, 23, 26], 1),
-	\dur, 0.2,
-	\rq, Pwhite(0.005, 0.01)
+	\note, Pseq([-1, 1, -1, 1, 3, 6, 9, 11, 12, 15, 17, 18, 19, 20, 23, 26].mirror, inf),
+	\ctranspose, -24,
+	\dur, 3,//0.2,
+	\dec, 0.1,
+	\sus, 0.1,
+	\att, 0.01,
+	\rel, 2,
+	\rq, 0.001, //Pwhite(0.005, 0.01)
 ).play;
 );

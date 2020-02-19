@@ -59,3 +59,27 @@ Ndef(\test, {
 }).play;
 )
 // -- end of copied code
+
+
+
+
+
+
+Pbindef.clear;
+~clocke = TempoClock.new(7).permanent_(true); // if not using a shared clock
+~mySynth = "default"; // choose a synth here
+
+// ORIGINAL (do not live code on this one)
+(
+Pbindef(\p1,
+	\instrument, ~mySynth,
+    \degree, Pseq([0, 2, 4, 5, 7, 9, 11], inf),
+    \dur, Pseq([ 1], inf),
+    \amp, 0.5,
+    \legato, 1
+).play(~clocke, quant: 10).quant = 4;
+)
+// a minor d major b minor c major
+
+a = Scale.major;
+a.degrees;

@@ -29,8 +29,8 @@ Ndef(\a, {
 	var harmonic, snd;
 	harmonic = 7;
 	snd = SinOsc.ar(
-		freq: SinOsc.ar(1/2).range(30, 72).midicps.round(50),
-		mul: SinOsc.ar(2).range(0.0, 0.5)
+		freq: 60,
+		mul: SinOsc.ar(1/10).range(0.0, 0.5)
 	);
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
 }).play;

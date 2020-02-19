@@ -1,3 +1,4 @@
+
 // changing this file from Tanya's laptop NOW
 // basic example
 // copy paste this code into a new window, go from there
@@ -7,12 +8,19 @@ Ndef(\test).fadeTime = 1;
 Ndef(\test, {
 	var snd, env;
 	// you can comment out one env line and uncomment the other to use it
-	env = Env.triangle(dur: 10, level: 0.5).kr;
+	env = Env.perc(
+		attackTime: 10,
+		releaseTime: 10,
+		level: 0.5,
+		curve: -4.0
+	).kr;
 	// env = SinOsc.ar(1/7).range(0, 0.5);
 	snd = SinOsc.ar(
-		freq: 43 * 7, // pick your harmonic number here
+		freq: 43 * 2, // pick your harmonic number here
 		mul: env
 	);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;
 )
+
+Env.perc(10, 10).plot

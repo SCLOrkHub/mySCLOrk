@@ -1,9 +1,10 @@
 (
-SynthDef("verySimple", {arg freq=440, amp=0.1, att = 0.01, rel = 0.01, gate=1;
+SynthDef("verySimple", {arg freq=440, amp=0.1, att = 1, rel = 1, gate=1;
     var snd, env;
     env = Env.asr(attackTime: att, sustainLevel: 3, releaseTime: rel).ar(2, gate);
 	snd = SinOsc.ar(freq: [freq * SinOsc.ar(0.1, pi).range(0.95, 1.05), freq * SinOsc.ar(0.1).range(0.95, 1.05)], mul: env);
-	snd = Fold.ar(Mix.ar(snd), -1, 1).tanh;
+	snd = snd * pi * 5;
+	snd = SinOsc.ar(0, snd.mod(2pi));
 	//snd = RLPF.ar(snd, LinExp.ar(env, 0, 2.5, 16000, 1000), 0.7);
 	snd = snd * amp;
     Out.ar(0, [snd, snd]);
@@ -31,16 +32,16 @@ Pbindef(\hancock,
         32, 33 // 4
     ], inf),
     \amp, Pseq([
-        0, \rest, 0, // 1
-        \rest, 0, \rest, // 2
-        \rest, 0, // 3
-        0, 0, // 4
-        0, \rest, 0, // 1
+        1, \rest, 0, // 1
         \rest, 0, \rest, // 2
         \rest, 1, // 3
-        0, 0 // 4
+        1, 1, // 4
+        1, \rest, 0, // 1
+        \rest, 0, \rest, // 2
+        \rest, 1, // 3
+        1, 1 // 4
     ], inf) * 0.2,
-    \att, 0.02,
+    \att, 0.1,
     \rel, 0.1,
     \legato, 0.7,
 ).play(~clock, quant: 8).quant = 8;

@@ -13,8 +13,9 @@ Ndef(\a, {
 	snd = Mix.ar(snd) * env;
 	snd = Fold.ar(snd, -1, 1).distort.distort;
 	snd = RLPF.ar(snd, LinExp.kr(env, 0, 1, freq * 4, 10000), 0.8);
-	snd = Mix.ar(snd * amp);
-	snd = CombN.ar(snd, 3, 1.5, 2.5);
+	snd = Mix.ar(snd * 0.1);
+	snd = Limiter.ar(snd);
+	snd = CombN.ar(snd, 3, 3, 5);
 	snd = snd * Slew.ar(LFClipNoise.ar(0.05).range(0, 1), 10, 10);
 	snd = Limiter.ar(snd);
 }).play

@@ -8,13 +8,21 @@ SynthDef("bass", { arg freq = 440, amp = 0.6, att = 0.01, rel = 0.4, pan = 0, ga
 	amplitudes = [0.9, 0.25, 0.25, 0.2, 0.2, 0.15, 0.1, 0.05];
 
 	snd = Saw.ar(freq * harmonics, amplitudes*amp);
+	snd = BPF.ar(snd, freq, 0.5, 2);
 	snd2 = SinOsc.ar(freq); // * LFTri.ar(5).range(0, 1);
 
-	snd = (snd * 0.8) + (snd2 * 0.2);
-
-	snd = HPF.ar(snd, 50);
+	snd = (snd * 0.7) + (snd2 * 0.3);
 
 	snd = snd * env;
+
+	snd = FreeVerb.ar(
+		in: snd,
+		mix: 0.8,
+		room: 0.8,
+		damp: 0.5,
+		mul: 2
+	);
+
 	snd = Mix.ar(snd);
 	snd = Pan2.ar(snd, pan);
 	Out.ar(0, snd);

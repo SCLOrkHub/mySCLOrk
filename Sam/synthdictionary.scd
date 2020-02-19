@@ -1,0 +1,1 @@
+"synthDictionary.scd".loadRelative;

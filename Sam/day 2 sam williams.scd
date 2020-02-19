@@ -15,6 +15,7 @@ Ndef(\test, {
 	snd = Mix.ar(snd);
 }).play;
 )
+)
 // -- end of copied code
 
 // ++ code copied from bruno

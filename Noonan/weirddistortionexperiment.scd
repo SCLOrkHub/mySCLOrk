@@ -1,4 +1,17 @@
 (
+SynthDef("aClick", { arg freq, gate = 1;
+	var snd, env;
+	snd = Saw.ar(freq/2, 0.5);
+
+	snd = LPF.ar(snd, Pulse.ar(1/2).range(100, 400));
+	env = Env.asr(0.001, 1, 0.5).kr(gate: gate, doneAction: 2);
+
+	snd = Limiter.ar(Mix.ar(snd));
+	snd = Out.ar(0, snd);
+
+	//DetectSilence.ar(snd, 0.001, 0.2, doneAction: 2);
+}).add;
+
 SynthDef("bClick", { arg freq, gate = 1;
 	var snd, env;
 	snd = Saw.ar(freq, 0.5);
@@ -51,36 +64,44 @@ SynthDef("eClick", { arg freq, gate = 1;
 	//DetectSilence.ar(snd, 0.001, 0.2, doneAction: 2);
 }).add;
 
+Pbindef(\aClick,
+	\instrument, "aClick",
+	\dur, 2,
+	\degree, Pseq([0, 2], inf),
+	\ctranspose, -24
+).play(~clock, quant: 4).quant = 4;
+
 Pbindef(\bClick,
 	\instrument, "bClick",
-	\dur, Pseq([Pn(4, 3), 2, 2], inf)/2,
-	\degree, Pseq([0, 2, 3, 0, -2b], inf),
+	\dur, 2,
+	\degree, Pseq([0, 2], inf),
 	\ctranspose, -24
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\cClick,
 	\instrument, "cClick",
-	\dur, Pseq([Pn(4, 3), 2, 2], inf)/2,
-	\degree, Pseq([0, 2, 3, 0, -2b], inf),
+	\dur, 2,
+	\degree, Pseq([0, 2], inf),
 	\ctranspose, -24
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\dClick,
 	\instrument, "dClick",
-	\dur, Pseq([Pn(4, 3), 2, 2], inf)/2,
-	\degree, Pseq([0, 2, 3, 0, -2b], inf),
+	\dur, 2,
+	\degree, Pseq([0, 2], inf),
 	\ctranspose, -24
 ).play(~clock, quant: 4).quant = 4;
 
 
 Pbindef(\eClick,
 	\instrument, "eClick",
-	\dur, Pseq([Pn(4, 3), 2, 2], inf)/2,
-	\degree, Pseq([0, 2, 3, 0, -2b], inf),
+	\dur, 2,
+	\degree, Pseq([0, 2], inf),
 	\ctranspose, -24
 ).play(~clock, quant: 4).quant = 4;
+)
 
-
+(
 SynthDef("hihat", {arg amp = 0.5, att = 0.01, rel = 0.2, ffreq = 6000, pan = 0;
     var env, snd;
     env = Env.perc(

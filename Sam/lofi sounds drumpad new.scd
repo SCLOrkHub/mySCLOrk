@@ -97,7 +97,7 @@ SynthDef.new("playBuf", { arg bufnum, startPos = 0, amp = 0.5, gate = 1, rate = 
 // =====================================================
 
 // Create a clock to run the Pbindefs with
-~clock = TempoClock.new(80/60).permanent_(true);
+~clock = TempoClock.new(1).permanent_(true);
 
 // I'll use the button number as the Pbindef name
 (
@@ -108,6 +108,22 @@ Pbindef(\41,
 	\bufnum, ~samples[0],
 	\amp, 0.5,
 	\rate, 1
+).play(~clock, quant: 4).quant = 4;
+
+Pbindef(\45,
+	\instrument, "playBuf",
+	\dur, Pseq([2, 1, 4, 5, 3], inf),
+	\bufnum, ~samples[15],
+	\amp, 0.4,
+	\rate, Pwhite(-2.0, 0)
+).play(~clock, quant: 4).quant = 4;
+
+Pbindef(\46,
+	\instrument, "playBuf",
+	\dur, Pseq([2, 1, 4, 5, 3], inf),
+	\bufnum, ~samples[18],
+	\amp, 0.4,
+	\rate, Pwhite(0.5, 0.9)
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\42,
@@ -151,6 +167,14 @@ Pbindef(\40,
 	\bufnum, ~samples[6],
 	\amp, Pwhite(0.4, 0.6),
 	\rate, Pwhite(-1.0, 1.0)
+).play(~clock, quant: 4).quant = 4;
+
+Pbindef(\43,
+	\instrument, "playBuf",
+	\dur, Pseq([Pseq([1/2], 8), Pseq([1/3, 1/6, 1/2], 4)], inf),
+	\bufnum, ~samples[11],
+	\amp, Pwhite(0.2, 0.3),
+	\rate, Pwhite(0.7, 1.1)
 ).play(~clock, quant: 4).quant = 4;
 )
 

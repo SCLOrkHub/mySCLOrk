@@ -33,7 +33,7 @@ SynthDef("grain-asr", {arg buffer, rate = 1, startPos = 0, gate = 1, att = 0.01,
 	\instrument, "grain-asr",
 	\buffer, b,
 	\startPos, 0, // 0.0=beginning of sample, 0.5=half way into sample, 1.0=end of sample
-	\dur, 90,
+	\dur, PS90,
 	\att, 0.001,
 	\rel, 0,
 	\rate, 0.8, //Pwhite(1, 1.5), // 1=original speed, 0.5=half speed, 2=twice speed, etc.

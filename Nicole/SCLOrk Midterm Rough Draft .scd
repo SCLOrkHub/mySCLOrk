@@ -24,12 +24,12 @@ SCLOrkChat.new("nicole")
 
 
 
-//INTRO -- Sunrise, the day is starting.
+//INTRO -- Sunrise, the day is starting.Jane first, then nicole then nicole
 (
 Ndef(\a).fadeTime = 7;
 Ndef(\a, {
 	var harmonic, snd;
-	harmonic = 1; // change this number, anything between 1 to 32, then control + enter
+	harmonic = -1; // change this number, anything between 1 to 32, then control + enter
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
 		mul: 0.4 // you can also change the volume here
@@ -69,7 +69,7 @@ Ndef(\a, {
         attackTime: 0.1, // attack
         releaseTime: 10, // release
         level: 0.4, // main volume
-        curve: -6// concave or convex shape
+        curve: 6// concave or convex shape
         ).kr;
     var snd = LFPulse.ar(
         freq: 10 * [1, 8, 23, 31, 5, 24],
@@ -110,7 +110,7 @@ Ndef(\a, {
 }).play;
 )
 
-//A Different Low Rhythm -- underwater volcano vibess or "burning man"
+//Nicole come here A Different Low Rhythm -- underwater volcano vibess or "burning man"
 (
 Ndef(\a, {
     var harmonic, snd;

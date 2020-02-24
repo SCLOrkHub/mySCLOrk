@@ -30,7 +30,7 @@ Ndef(\a, {
 	harmonic = 7;
 	snd = SinOsc.ar(
 		freq: 60,
-		mul: SinOsc.ar(1/10).range(0.0, 0.5)
+		mul: SinOsc.ar(1/10).range(0.01, 0.8)
 	);
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
 }).play;
@@ -99,10 +99,10 @@ Ndef(\a, {
 Ndef(\a, {
 	var harmonic, snd;
 	// round numbers to ensure integers only:
-	harmonic = 6;
+	harmonic = 2;
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
-		mul: SinOsc.ar(MouseX.kr(1, 44)).range(0.0, 0.5)
+		mul: SinOsc.ar(MouseX.kr(1, 86)).range(0.0, 0.5)
 	);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;

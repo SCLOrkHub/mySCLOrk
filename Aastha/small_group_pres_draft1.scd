@@ -43,9 +43,9 @@ Ndef(\wow, {
 }).play;
 )
 
-Ndef.clear(10);
 
-//darker strings
+
+//darker strings - mosquito glissando, could be more randomized
 (
 Ndef(\wow).fadeTime = 8;
 Ndef(\wow, {

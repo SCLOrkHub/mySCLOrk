@@ -48,7 +48,7 @@
 
 // START METRONOMES (you can pick a BPM other than 60 if you like)
 (
-var bpm = 90;
+var bpm = 120;
 ~destinationList.do({ |ip|
 	if(ip.notNil, {
 		ip.sendMsg('metronome', \on, bpm); // message to connected

@@ -1,6 +1,6 @@
 (
-Ndef(\b).fadeTime = 2;
-Ndef(\b, {
+Ndef(\no).fadeTime = 10;
+Ndef(\no, {
 	arg env, snd, freq, amp, rel;
 	freq = [22, 69, 65, 75, 74].choose.midicps * [1, 1.001, 0.999, 1.5, 5, 6.7] * Line.kr(1, 1.15, rrand(4, 7));
 	amp = 0.4;

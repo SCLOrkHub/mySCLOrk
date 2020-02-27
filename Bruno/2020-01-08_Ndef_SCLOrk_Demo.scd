@@ -7,14 +7,14 @@ SCLOrkChat.new("bbb");
 
 // ++ code copied from bruno
 (
-Ndef(\noMidTerm).fadeTime = 1;
-Ndef(\noMidTerm, {
+Ndef(\deepListening).fadeTime = 1;
+Ndef(\deepListening, {
 	var snd, freq;
-	freq = 43 * 4;
+	freq = 43 * 21 * [1, 1.001];
 
-	snd = SinOsc.ar(
+	snd = LFPulse.ar(
 		freq: freq,
-		mul: LFSaw.ar(1/10).range(0, 0.1)
+		mul: 0.5
 	);
 	snd = Mix.ar(snd);
 	snd = Limiter.ar(snd);

@@ -52,8 +52,13 @@ s.boot;
 ~samples[14].play;
 ~samples[15].play;
 ~samples[16].play;
-
-
+~samples[17].play;
+~samples[18].play;
+~samples[19].play;
+~samples[20].play;
+~samples[21].play;
+~samples[22].play;
+~samples[23].play;
 
 
 
@@ -103,10 +108,10 @@ Pbindef(\51,
 
 Pbindef(\50,
 	\instrument, "playBuf",
-	\dur, Pseq([1/2, 2, 3], inf),
+	\dur, Pseq([2, 2], inf),
 	\bufnum, ~samples[1],
-	\amp, 0.5,
-	\rate, 1
+	\amp, 0.20,
+	\rate, 2
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\49,
@@ -119,26 +124,27 @@ Pbindef(\49,
 
 Pbindef(\48,
 	\instrument, "playBuf",
-	\dur, 8,
+	\dur, Pseq([10, 8, 8], inf),
 	\bufnum, ~samples[8],
 	\amp, 0.5,
+	\att, 0.1,
 	\rate, 1
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\47,
 	\instrument, "playBuf",
-	\dur, Pseq([Rest(1), 1], inf),
+	\dur, Pseq([1, Rest (1), 1, 0.25, 0.25], inf),
 	\bufnum, ~samples[10],
-	\amp, 0.5,
-	\rate, 1
+	\amp, 0.4,
+	\rate, 4
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\46,
 	\instrument, "playBuf",
-	\dur, Pseq([1, Rest(1), 5/16, 3/16, 1/2, Rest(7/8), 1/8, 1/2, Rest(1/2), Rest(1), 1, Rest(1) ], inf),
+	\dur, Pseq([1, 1, 8/16, 8/16, 1/2], inf),
 	\bufnum, ~samples[11],
 	\amp, 0.3,
-	\rate, 1
+	\rate, 1/2
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\45,
@@ -149,7 +155,7 @@ Pbindef(\45,
 	], inf),
 	\bufnum, ~samples[15],
 	\amp, Pwhite(0.25, 0.5),
-	\rate, Pwrand([1, 2], [0.8, 0.2], inf)
+	\rate, Pwrand([1, 2], [0.9, 0.2], inf)
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\44,
@@ -164,8 +170,8 @@ Pbindef(\44,
 Pbindef(\43,
 	\instrument, "playBuf",
 	\dur, Prand([
-		Pseq([Rest(1/2), 1/2], 4),
-		Pshuf([Rest(0.5), 0.25, 0.25, Rest(0.5), 0.5, Rest(0.5), 0.5], 1)
+		Pseq([Rest(1/2), 1/4], 4),
+		Pshuf([1, 0.5, 1, Rest(0.5), 1, 0.5, 1], 1)
 	], inf),
 	\bufnum, ~samples[14],
 	\amp, Pwhite(0.25, 0.5),
@@ -174,11 +180,20 @@ Pbindef(\43,
 
 Pbindef(\42,
 	\instrument, "playBuf",
-	\dur, Pseq([1, 4, 2], inf),
+	\dur, Pseq([1,1,1/2, 1/2, 2], inf),
 	\bufnum, ~samples[12],
 	\amp, Pwhite(0.15, 0.3),
 	\rate, 1
 ).play(~clock, quant: 4).quant = 4;
+
+Pbindef(\41,
+	\instrument, "playBuf",
+	\dur, 8,
+	\bufnum, ~samples[18],
+	\amp, 0.5,
+	\rate, 1/2
+).play(~clock, quant: 4).quant = 4;
+
 )
 
 // Stop all Pbindefs

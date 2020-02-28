@@ -62,7 +62,7 @@ Ndef(\denial, {
 Ndef(\bargaining, {
 	var snd, freq, maxwidth;
 
-	freq = MouseY.kr(500, 1500);
+	freq = MouseY.kr(500, 1500).round(150);
 	maxwidth = 100;
 
 	snd = LFTri.ar(
@@ -84,7 +84,7 @@ Ndef(\bargaining, {
 	freq = MouseY.kr(500, 100) * LFNoise0.ar(10).range(1, 2);
 	maxwidth = 100;
 
-	snd = SinOsc.ar(
+	snd = LFTri.ar(
 		freq: [(freq + MouseX.kr(0, maxwidth)), (freq - MouseX.kr(0, maxwidth))],
 		mul: 0.1
 	);
@@ -148,6 +148,27 @@ Ndef(\anger, {
 
 	snd = Saw.ar(
 		freq: freq,
+		mul: 0.1
+	);
+
+
+	snd = Limiter.ar(Mix.ar(snd));
+}).play;
+)
+
+
+(
+Ndef(\anger, {
+	var snd, freq, width;
+
+	width = MouseY.kr(100, 1000);
+
+	freq = SinOsc.ar(7).range((width - 50), (width + 50)) ;
+	freq = [freq, (freq * 2), (freq * 3), (freq / 2)] ;
+
+
+	snd = Saw.ar(
+		freq: freq * LFNoise0.ar(15).range(1, 10),
 		mul: 0.1
 	);
 

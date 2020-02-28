@@ -48,7 +48,7 @@ Ndef(\a).fadeTime = 1;
 Ndef(\a, {
 	var snd, cake = [1, 1.5, 2, 3, 4];
 	snd = SinOscFB.ar(
-		freq: 40 * cake,
+		freq: MouseX.kr(43, 430).round(43) * cake,
 		feedback: LFSaw.ar(cake).range(0, 1.5),
 		mul: 1
 	);

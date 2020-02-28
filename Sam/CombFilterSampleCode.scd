@@ -41,7 +41,7 @@ SynthDef("grain-asr", {arg buffer, rate = 1, startPos = 0, gate = 1, att = 0.01,
 	\amp, 1,
 	\pan, Pwhite(-1.0, 1.0),
 	\legato, 1
-).play.stop;
+).play;
 
 ~stubborn.play;
 )

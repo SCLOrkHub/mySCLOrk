@@ -12,11 +12,11 @@ SynthDef("Wobbly Organ", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pa
 	vibrato = SinOsc.kr(vibratoSpeed).range(vibratoAmount.neg, vibratoAmount);
 	midinote = (freq * harmonics).cpsmidi + vibrato;
 
-	snd = SinOsc.ar(freq: midinote.midicps, mul: (amplitudes*amp)*LFSaw.ar(5).range(0, 1));
+	snd = SinOsc.ar(freq: midinote.midicps, mul: (amplitudes*amp)*LFSaw.ar(3).range(0, 1));
 
 	snd = LPF.ar(
 		in: snd,
-		freq: SinOsc.kr(freq: 8).range(freq*0.8, freq*1.25);
+		freq: SinOsc.kr(freq: 4).range(freq*0.8, freq*1.25);
 	);
 
 	snd = FreeVerb.ar(
@@ -40,8 +40,8 @@ SynthDef("stringish", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pan =
 
 	snd = LFTri.ar(
 		freq: freq*harmonics,
-		iphase: LFNoise0.ar(20),
-		mul: (amplitudes*amp+LFPulse.ar(3).range(-0.075, 0.075))*LFSaw.ar(7).range(0, 1)
+		iphase: LFNoise0.ar(4),
+		mul: (amplitudes*amp+LFPulse.ar(5).range(-0.075, 0.075))*LFSaw.ar(2).range(0, 1)
 	);
 
 	env = Env.asr(
@@ -66,10 +66,6 @@ SynthDef("stringish", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pan =
 	snd = Limiter.ar(snd);
 	Out.ar(0, snd);
 }).add;
-)
-
-(
-
 )
 
 (

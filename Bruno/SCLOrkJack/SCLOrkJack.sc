@@ -32,7 +32,7 @@ SCLOrkJack {
 	}
 
 	// Returns Array with all available port names, no formatting
-	*listRawConnections {
+	*listConnections {
 
 		^"jack_lsp -c".unixCmdGetStdOut;
 
@@ -40,12 +40,62 @@ SCLOrkJack {
 
 	*collectConnections {
 
-		^"jack_lsp -c".unixCmdGetStdOutLines;
+		var stdout, from, to, connections, destinations;
+
+		stdout = "jack_lsp -c".unixCmdGetStdOutLines;
+		connections = Array.new;
+		destinations = Array.new;
+
+		stdout.do({ |port|
+			if(port.beginsWith("   "), {
+				to = port.drop(3);
+				destinations = destinations.add(to);
+			}, {
+				if(destinations.size > 0, {
+					connections = connections.add(destinations)
+				});
+				destinations = Array.new; // refresh destination list
+				connections = connections.add(port); // this port is a from, so add it right away
+			})
+		});
+
+		^connections;
 
 	}
 
 
-	//
+	// Returns Array with all available port names, no formatting
+	*listProperties {
+
+		^"jack_lsp -p".unixCmdGetStdOut;
+
+	}
+
+	*collectProperties {
+
+		var stdout, line1, line2, properties, props;
+
+		stdout = "jack_lsp -p".unixCmdGetStdOutLines;
+		properties = Array.new;
+
+		stdout.do({ |line, index|
+			line1 = line;
+			line2 = stdout[index+1];
+
+			if(line2.notNil, {
+				if(line2.contains("properties"), {
+					props = line2.split($:).at(1).split($,);
+					props[0] = props[0].drop(1); // drop white space from beginning
+					props = props.drop(-1); // drop last item (blank string)
+					properties = properties.add(line1.asString);
+					properties = properties.add(props);
+				})
+			});
+		});
+
+		^properties;
+
+	}
 
 
 
@@ -65,7 +115,7 @@ SCLOrkJack {
 	// Prints sorted list on Post Window
 	*list {
 
-		var list = this.listTypes.clump(2);
+		var list = SCLOrkJack.listTypes.clump(2);
 
 		list = list.collect({ |i|
 			var port, type;
@@ -87,12 +137,12 @@ SCLOrkJack {
 
 		("jack_connect \"" ++ from ++ "\" \"" ++ to ++ "\"").unixCmd;
 
-		if(this.isAvailable(from).not, {
-			("WARNING: could not find port" ++ from).postln;
+		if(SCLOrkJack.isAvailable(from).not, {
+			("WARNING: [connect] could not find port " ++ from).postln;
 		});
 
-		if(this.isAvailable(to).not, {
-			("WARNING: could not find port " ++ to).postln;
+		if(SCLOrkJack.isAvailable(to).not, {
+			("WARNING: [connect] could not find port " ++ to).postln;
 		});
 
 
@@ -105,43 +155,101 @@ SCLOrkJack {
 
 		("jack_disconnect \"" ++ from ++ "\" \"" ++ to ++ "\"").unixCmd;
 
-		if(this.isAvailable(from).not, {
-			("WARNING: could not find port " ++ from).postln;
+		if(SCLOrkJack.isAvailable(from).not, {
+			("WARNING: [disconnect] could not find port " ++ from).postln;
 		});
 
-		if(this.isAvailable(to).not, {
-			("WARNING: could not find port " ++ to).postln;
+		if(SCLOrkJack.isAvailable(to).not, {
+			("WARNING: [disconnect] could not find port " ++ to).postln;
 		});
 
 	}
 
 
-	// Use listConnections - do some parsing of incoming lines
-	// only way to tell who is connected to who is:
-	// if first line does not have a blank space, it is a connector
-	// check next line: if starts with blank space, it's connected to previous
-	// another line starting with blank? also connected to that previous
-	// new line with no blank space? another connector
-	// iterate...
+	// Disconnect all current connections (audio and midi).
+	// Array obtained through collectConnections is organized this way:
+	// ["from1", ["to1", "to2"], "from2", "from3", ["to6"] ..]
 	*disconnectAll {
-		var from;
-		this.collectConnections.do({ |port, index|
-			if(port.beginsWith(" "), {
-				port = this.prDropBeginningWhiteSpace(port);
-				this.disconnect(from, port);
+		var from, to;
+		SCLOrkJack.collectConnections.do({ |item|
+			if(item.isString, {
+				from = item;
 			}, {
-				from = port;
-			})
+				if(item.isArray, {
+					item.do({ |port|
+						to = port;
+						SCLOrkJack.disconnect(from, to);
+					})
+				});
+			});
+		});
+	}
+
+	// Cconnect several ports from a given connections array (audio and midi).
+	// Array should be organized this way:
+	// ["from1", ["to1", "to2"], "from2", "from3", ["to6"] ..]
+	*connectAllFrom { |array|
+		var from, to;
+		array.do({ |item|
+			if(item.isString, {
+				from = item;
+			}, {
+				if(item.isArray, {
+					item.do({ |port|
+						to = port;
+						SCLOrkJack.connect(from, to);
+					})
+				});
+			});
 		});
 	}
 
 	// Checks if a port is currently available
 	*isAvailable { |port|
-		^if(this.collectPorts.occurrencesOf(port) > 0, { true }, { false });
+		^if(SCLOrkJack.collectPorts.occurrencesOf(port) > 0, { true }, { false });
 	}
 
+	// Takes a snapshot of all current connections and saves into file.
+	// Opens a dialog box for user to choose file name and location.
+	*saveCurrentConnections {
+		var file, connections;
+
+		connections = SCLOrkJack.collectConnections.asCompileString;
+		Dialog.savePanel(
+			okFunc: { |path|
+				file = File(path,"w");
+				file.write(connections);
+				file.close;
+			},
+			cancelFunc: "nevermind".postln;
+		);
+	}
+
+	*loadConnectionsFromFile { |path|
+		var connections, loadFunction;
+
+		loadFunction = { |p|
+			["loading", p].postln;
+			connections = File.readAllString(p).interpret;
+			SCLOrkJack.connectAllFrom(connections);
+		};
+
+		if(path.notNil, {
+			loadFunction.value(path);
+			"path was not nil".postln;
+		}, {
+			"path was nil, go for dialog".postln;
+			Dialog.openPanel(loadFunction);
+		});
+	}
+
+}
 
 
+
+	/*
+
+	// obsolete
 
 	// function needed to find number of padding white spaces in string results from terminal
 	*prFindIndexOfFirstNonWhiteSpace { |string|
@@ -173,7 +281,8 @@ SCLOrkJack {
 
 
 
-} // end of Class code
+	*/
+ // end of Class code
 
 
 

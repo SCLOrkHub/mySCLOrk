@@ -3,7 +3,9 @@ o = Server.local.options;
 o.memSize;
 o.memSize = 8192 * 4;
 )
-SCLOrkChat.new("noonan")
+
+SCLOrkChat.new("noonan");
+
 (
 SynthDef("Wobbly Organ", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pan = 0, vibratoSpeed = 8, vibratoAmount = 0.1, gate = 1;
 	var snd, env, harmonics, amplitudes, midinote, vibrato;
@@ -22,7 +24,7 @@ SynthDef("Wobbly Organ", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pa
 
 	snd = LPF.ar(
 		in: snd,
-		freq: SinOsc.kr(freq: 8).range(freq*0.8, freq*1.25);
+		freq: SinOsc.kr(freq: 8).range(freq*4/5, freq*5/4);
 	);
 
 	snd = FreeVerb.ar(
@@ -72,21 +74,6 @@ SynthDef("stringish", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pan =
 	Out.ar(0, snd);
 }).add;
 
-SynthDef("plucking", {arg amp = 0.1, freq = 440, decay = 5, dampen = 0.1, mix = 0.5;
-
-var env, snd;
-env = Env.linen(0.2, decay, 0).kr(doneAction: 2);
-snd = Pluck.ar(
-        in: WhiteNoise.ar(amp),
-        trig: Impulse.kr(0),
-        maxdelaytime: 0.1,
-        delaytime: freq.reciprocal,
-        decaytime: decay,
-        coef: dampen);
-	snd = FreeVerb.ar(snd, mix, 0.8, 1);
-    Out.ar(0, [snd, snd]);
-}).add;
-
 SynthDef(\cheapPiano1, {
 	arg
 	//Standard values
@@ -133,19 +120,6 @@ metadata: (
 (
 ~clock = TempoClock.new(110/60).permanent_(true);
 
-Pbindef(\musicBox,
-	\instrument, "plucking",
-	\midinote, Pseq([57, 65, [71, 75], [69, 73], 57, 55, 63, [69, 73], [67, 71], 55], inf),
-	\dur, Pseq([0.5, 0.5, 1, 0.5, 0.5], inf)*4/3,
-	\decay, 1,
-	\mix, 0.8,
-	\ctranspose, 24,
-	\dampen, 0.2,
-	\amp, Pseq([0.3, 0.5, 0.5, 0.3, 0.2], inf)*2
-).play(~clock, quant: 4).quant = 4;
-)
-
-(
 Pbindef(\organ,
 	\instrument, "Wobbly Organ",
 	\dur, 8,
@@ -159,18 +133,6 @@ Pbindef(\organ,
 )
 
 (
-Pbindef(\musicBox,
-	\instrument, "plucking",
-	\midinote, Pseq([57, 65, [71, 75], [69, 73], 57, 55, 63, [69, 73], [67, 71], 55]),
-	\dur, Pseq([0.5, 0.5, 1, 0.5, 0.5])*4/3,
-	\decay, 1,
-	\mix, 0.8,
-	\ctranspose, 24,
-	\dampen, 0.2,
-	\amp, Pseq([0.3, 0.1, 0.05, 0.025, 0.0125], inf)*2
-).play(~clock, quant: 4).quant = 4;
-)
-(
 Pbindef(\wholeTone,
 	\instrument, "cheapPiano1",
 	\midinote, Pseq([Pseries(57, 2, 8), Pseries(73, -2, 8)], inf),
@@ -181,6 +143,7 @@ Pbindef(\wholeTone,
 )
 
 (
+// Pbindef(\organ).stop;
 Pbindef(\organ,
 	\instrument, "Wobbly Organ",
 	\dur, 8,
@@ -193,7 +156,7 @@ Pbindef(\organ,
 		[49, 61, 65, 69, 73],
 	], inf),
 	\legato, 0.9,
-	\amp, 0.6,
+	\amp, 0.5,
 	\pan, [-0.5, -0.25, 0, 0.25, 0.5]
 ).play(~clock, quant: 4).quant = 4;
 
@@ -208,7 +171,7 @@ Pbindef(\pad,
 		[47, 59, 71],
 	], inf),
 	\legato, 0.9,
-	\amp, 0.4,
+	\amp, 0.3,
 	\ctranspose, 12
 ).play(~clock, quant: 4).quant = 4;
 )
@@ -218,7 +181,9 @@ Pbindef(\wholeTone,
 	\instrument, "cheapPiano1",
 	\midinote, Pseq([Pseries(57, 2, 8), Pseries(73, -2, 8)], inf),
 	\dur, 0.25,
-	\ctranspose, 0,
+	\ctranspose, 12,
 	\amp, Pseq([Pseries(0.05, 0.025, 8), Pseries(0.225, -0.025, 8), Pseries(0.05, 0.0125, 8), Pseries(0.1125, -0.0125, 8), Pseries(0.05, 0.00625, 8), Pseries(0.05625, -0.00625, 8)])
 ).play(~clock, quant: 4).quant = 4;
 )
+
+Pbindef(\wholeTone).stop;

@@ -1,6 +1,3 @@
-SCLOrkChat.new("noonan")
-
-// ++ code copied from bruno
 (
 // move mouse
 Ndef(\a).fadeTime = 1;
@@ -21,7 +18,7 @@ Ndef(\a, {
 		freq: Demand.kr(trigger, 0, midinotes.choose) * SinOsc.ar(7) * [
 			1, 1.01, 2, 2.001, 3, 3.001, 4, 4.01, 5, 5.05, 6, 6.05, 7, 7.1, 8, 9, 10
 		],
-		mul: LFSaw.ar(3).range(0.1, 0.8),
+		mul: LFSaw.ar(3).range(0.1, 0.8)*SinOsc.ar(1/10).range(0, 1),
 	);
 	snd = LPF.ar(snd, SinOsc.ar(67).range(100, 20000));
 	snd = snd * env;
@@ -30,4 +27,3 @@ Ndef(\a, {
 	snd = Limiter.ar(snd);
 }).play;
 )
-// -- end of copied code

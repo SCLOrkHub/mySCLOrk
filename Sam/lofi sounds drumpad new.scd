@@ -155,8 +155,14 @@ Pbindef(\38,
 	\instrument, "playBuf",
 	\dur, Pseq([1, Rest(1), 5/16, 3/16, 1/2, Rest(7/8), 1/8, 1/2, Rest(1/2), Rest(1), 1, Rest(1) ], inf),
 	\bufnum, ~samples[12],
-	\amp, 0.3,
 	\amp, Pseq([0.4, \rest, 0.4, 0.3, 0.4, \rest, 0.2, 0.4, \rest, \rest, 0.4, \rest]*2, inf),
+).play(~clock, quant: 4).quant = 4;
+
+Pbindef(\36,
+	\instrument, "playBuf",
+	\dur, Pseq([1, Rest(1), 1/2, 2, 1, Rest(1/2), 2], inf),
+	\bufnum, ~samples[14],
+	\amp, Pseq([0.8], inf),
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\39,

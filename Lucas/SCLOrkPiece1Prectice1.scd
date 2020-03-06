@@ -1,13 +1,16 @@
+SCLOrkChat.new("Lucas");
+
 (
-Ndef(\denial1, {
+Ndef(\denial1, { // too angry
 	var freq, snd;
 	freq = (MouseX.kr(0, 200)%30)*20;
 	snd = Pulse.ar(
 		freq,
 		SinOsc.ar(freq/5),
 		mul: 0.5
+
 	);
-	snd = BLowPass.ar(snd, MouseY.kr(100, 20000));
+	snd = BLowPass.ar(snd, MouseY.kr(100, 2000));
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
 }).play;
 )
@@ -15,13 +18,13 @@ Ndef(\denial1).stop;
 
 (
 Ndef(\denial1).clear(5);
-Ndef(\denial2, {
+Ndef(\denial2, { // make more wobbly and less harmonic motion
 	var freq, snd;
 	freq = (MouseX.kr(0, 200)%30)*40;
-	snd = SinOsc.ar(
+	snd = LFTri.ar(
 		freq,
 		Pulse.ar(freq/2),
-		mul: 0.1
+		mul: 0.5
 	);
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
 }).play;
@@ -33,7 +36,7 @@ Ndef(\anger, {
 	var harmonic, snd;
 	harmonic = rrand(0, 1000)%7; // change this number, anything between 1 to 32, then control + enter
 	snd = Saw.ar(
-		freq: 43 * harmonic,
+		freq: 60 * harmonic,
 		mul: 0.9 // you can also change the volume here
 	);
 	snd = Fold.ar(snd, MouseX.kr(0, 200), MouseY.kr(0, 200));
@@ -76,6 +79,7 @@ Ndef(\depression, {
 	snd = SinOsc.ar({ExpRand(50, 1200)}!6);
 	snd = snd * amp * env;
 	snd = FreeVerb.ar(snd);
+	snd = snd * 0.5;
 	snd = Limiter.ar(Mix.ar(snd));
 
 }).play;
@@ -107,11 +111,37 @@ Ndef( \bargaining, {
 	var snd, freq;
 	freq = 47 * [2, 5, 8, 1] * SinOsc.ar(MouseY.kr(1/3, 60)).range(0.001, 0.21);
 	snd = SinOsc.ar(freq);
-	snd = BMoog.ar(snd * pi*MouseX.kr(0.5, 50), LFSaw.ar(5).range(20, 20000));
+	snd = BMoog.ar(snd * MouseX.kr(0.5, 50), LFSaw.ar(5).range(20, 20000));
+	snd = LPF.ar(snd, 1800);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play
 )
 Ndef(\bargaining).clear(10);
+
+(
+Ndef(\accDrone).fadeTime = 12;
+Ndef(\accDrone, {
+	var harmonic, snd;
+	harmonic = 7;
+	snd = LFTri.ar(
+		freq: [60, 60.1, 60.015],
+		mul: SinOsc.ar(1/10).range(0.01, 0.8)
+	);
+	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
+}).play;
+)
+
+(
+Ndef(\accDrone, {
+	var harmonic, snd;
+	harmonic = 7;
+	snd = SinOsc.ar(
+		freq: [60, 60.1, 60.015],
+		mul: SinOsc.ar(1/10).range(0. 11, 0.4)
+	);
+	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
+}).play;
+)
 
 //code by grirgs
 // (

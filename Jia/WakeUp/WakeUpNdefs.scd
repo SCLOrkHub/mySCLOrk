@@ -1,10 +1,9 @@
 (
-b = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Jia/children-laugh.wav");
-h = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Jia/bruno1.wav");
-l = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Jia/life.wav");
-u = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Jia/i hate u.wav");
-m = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Jia/midterm.wav");
-o = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Jia/money.wav");
+b = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Jia/WakeUp/children-laugh.wav");
+h = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Jia/WakeUp/bruno1.wav");
+l = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Jia/WakeUp/life.wav");
+m = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Jia/WakeUp/midterm.wav");
+o = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Jia/WakeUp/money.wav");
 )
 
 (

@@ -85,7 +85,7 @@ Ndef.clear(10);
 
 // two frequencies moving in and out of sync, playing with beatings
 
-
+/*
 // the bad one
 (
 Ndef(\bargaining).fadeTime = 2;
@@ -104,7 +104,7 @@ Ndef(\bargaining, {
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;
 )
-
+*/
 
 // the good one
 (

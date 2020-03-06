@@ -28,9 +28,9 @@ Ndef(\a).fadeTime = 1;
 Ndef(\a, {
 	var harmonic, snd;
 	harmonic = 7;
-	snd = SinOsc.ar(
-		freq: 60,
-		mul: SinOsc.ar(1/10).range(0.01, 0.8)
+	snd = LFTri.ar(
+		freq: [60, 160],
+		mul: [SinOsc.ar(1/10).range(0.01, 0.8), SinOsc.ar(1/10).range(0.01, 0.3)]
 	);
 	snd = Limiter.ar(Mix.ar(snd)); // don't change this line
 }).play;

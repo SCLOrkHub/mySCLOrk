@@ -53,8 +53,8 @@ Ndef(\mic, {
 	snd = snd + CombC.ar(
 		in: snd,
 		maxdelaytime: 1,
-		delaytime: 20/60 , // < play wneith this number
-		decaytime: 50 // < and this number
+		delaytime: 15/60 , // < play wneith this number
+		decaytime: 20 // < and this number
 	);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;
@@ -76,8 +76,8 @@ Ndef(\mic, {
 	snd = snd + CombC.ar(
 		in: snd,
 		maxdelaytime: 1,
-		delaytime: 0.4, // < play with this number
-		decaytime: 5 // < and this number
+		delaytime: 0.03, // < play with this number
+		decaytime: 40 // < and this number
 	);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;

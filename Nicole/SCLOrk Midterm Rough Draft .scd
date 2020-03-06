@@ -4,6 +4,16 @@ SCLOrkChat.new("nicole")
 // Sam hates the sinwave and loves the highhats
 //have better transitions
 
+//NOTES 2/24/2020
+// Saxophone sam liked
+// aastha and burno liked the bass thing and said come in looudddd
+//felt like a super extended intro with all the different rhythmic figures disruption, jonthan liked it
+//harrison said it sounded like a heatbeat the underwater one
+//rhythmic stuff should keep going throuhgout that's what lucas says jonathan shakes his head no
+// bruno -- expand even more on rhythm and saxophone
+// bruno pulled up a track and sending us a japanese composer link
+// add one more leemnt to the high hats and the bass
+// intro could be a bit shorter bruno says
 
 
 //'subpar'
@@ -20,7 +30,7 @@ SCLOrkChat.new("nicole")
 
 //P5 - Erin sax solo, nicole/jane solo, and then we all come in at the same time and all the patterns line up.
 
-//P6 -  End with same sound that we start with.  ALl move to that at the same time.
+//P6 -  End with same sound that we start with.  All move to that at the same time.
 
 
 
@@ -29,7 +39,7 @@ SCLOrkChat.new("nicole")
 Ndef(\a).fadeTime = 7;
 Ndef(\a, {
 	var harmonic, snd;
-	harmonic = -1; // change this number, anything between 1 to 32, then control + enter
+	harmonic = -1.3; // change this number, anything between 1 to 32, then control + enter
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
 		mul: 0.4 // you can also change the volume here
@@ -61,7 +71,7 @@ Ndef(\a, {
 }).play;
 )
 
-//nicoel transition first to this one, jane stays on this for 15 seconds w/ erin
+//nicoel transition first to this one around 45sec, jane stays on this for 15 seconds w/ erin
 (
 Ndef(\a).fadeTime = 9;
 Ndef(\a, {
@@ -72,7 +82,7 @@ Ndef(\a, {
         curve: 6// concave or convex shape
         ).kr;
     var snd = LFPulse.ar(
-        freq: 10 * [1, 8, 23, 31, 5, 24],
+        freq: 10 * [1, 8, 23, 31, 5, 24, -42, -61],
         mul: LFSaw.ar(4).range(0, 1)
     );
     snd = LPF.ar(in: snd, freq: SinOsc.ar(12).range(500, 800));

@@ -49,3 +49,93 @@ Ndef(\wow).fadeTime = 1; // choose fade time here for Ndef(\wow)
 
 
 // try also changing SinOsc to Saw, LFSaw, Pulse, or LFTri
+
+
+
+// ++ code copied from bruno
+(
+Ndef(\a).fadeTime = 10;
+Ndef(\a, {
+	var snd, freq;
+	freq = 43 * rrand(1, 10) * [1, 1.002, 2];
+
+	snd = SinOsc.ar(
+		freq: freq,
+		mul: LFPulse.ar(LFPulse.ar(2.1).range(2, 4)).range(0.1, 0.5)
+	);
+	snd = Mix.ar(snd);
+	snd = Limiter.ar(snd);
+}).play;
+)
+// -- end of copied code
+
+// ++ code copied from josh
+(
+Ndef(\a).fadeTime = 10;
+Ndef( \a, {
+	var snd, freq;
+	freq = 43 * rrand(1, 10) * [1, 1.002, 2];
+
+	snd = SinOsc.ar(
+		freq: freq,
+		mul: Slew.ar(LFPulse.ar(LFPulse.ar(2.1).range(2, 4)).range(0.1, 0.5), 1000, 100)
+	);
+	snd = Mix.ar(snd);
+	snd = Limiter.ar(snd);
+}).play;
+)
+
+(
+Ndef(\a).fadeTime = 10;
+Ndef( \a, {
+	var snd, freq;
+	freq = 43 * rrand(1, 10) * [5, 5.0001, 5];
+
+	snd = SinOsc.ar(
+		freq: freq,
+		mul: Slew.ar(LFPulse.ar(LFPulse.ar(2.1).range(2.1, 4.1)).range(0.5, 0.9), 1000, 100)
+	);
+	snd = Mix.ar(snd);
+	snd = Limiter.ar(snd);
+}).play;
+)
+// -- end of copied code
+
+// ++ code copied from bruno
+(
+Ndef(\a).fadeTime = 0;
+Ndef(\a, {
+	var snd = LFSaw.ar(
+		freq: 43 * [0.5, 0.51, 0.52, 0.53],
+		mul: 0.5
+	);
+	snd = Mix.ar(snd);
+	snd = Limiter.ar(snd);
+}).play;
+)
+// -- end of copied code
+
+// ++ code copied from Lucas
+(
+Ndef( \bargaining, {
+	var snd, freq;
+	freq = 47 * [2, 5, 8, 1] * SinOsc.ar(MouseY.kr(2/3, 20)).range(0.001, 0.21);
+	snd = SinOsc.ar(freq);
+	snd = BMoog.ar(snd * pi*MouseX.kr(0.5, 50), LFSaw.ar(5).range(20, 20000));
+	snd = Limiter.ar(Mix.ar(snd));
+}).play
+)
+
+// -- end of copied code
+
+// ++ code copied from bruno
+(
+Ndef(\a).fadeTime = 1;
+Ndef(\a, {
+	SinOsc.ar(
+		freq: 40,
+		mul: LFSaw.ar(1).range(0, 1)
+	)
+}).play;
+)
+// -- end of copied code

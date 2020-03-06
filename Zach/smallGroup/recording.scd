@@ -2,7 +2,7 @@
 
 
 (
-Ndef(\mic1, {
+Ndef(\44, {
 	arg amp = 1;
 	var dry, wet, snd;
 	dry = SoundIn.ar(0) * Env.linen(1, 2, 1).kr;

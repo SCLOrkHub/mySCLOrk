@@ -102,7 +102,7 @@ Pbindef(\51,
 	\instrument, "playBuf",
 	\dur, 8,
 	\bufnum, ~samples[0],
-	\amp, 0.5,
+	\amp, 1,
 	\rate, 1
 ).play(~clock, quant: 4).quant = 4;
 
@@ -124,10 +124,11 @@ Pbindef(\49,
 
 Pbindef(\48,
 	\instrument, "playBuf",
-	\dur, Pseq([10, 8, 8], inf),
+	\dur, Pseq([1,1/2,1/2,1,1/4, Rest (1)], inf),
 	\bufnum, ~samples[8],
 	\amp, 0.5,
-	\att, 0.1,
+	\startPos, 0.25,
+	\att, Pwhite(-100, 500, inf),
 	\rate, 1
 ).play(~clock, quant: 4).quant = 4;
 
@@ -194,6 +195,29 @@ Pbindef(\41,
 	\rate, 1/2
 ).play(~clock, quant: 4).quant = 4;
 
+Pbindef(\40,
+	\instrument, "playBuf",
+	\dur, Pseq([1, 1, 8/16, 8/16, 1/2], inf),
+	\bufnum, ~samples[11],
+	\amp, 0.3,
+	\rate, 1/2
+).play(~clock, quant: 4).quant = 4;
+
+Pbindef(\39,
+	\instrument, "playBuf",
+	\dur, Pseq([2, 2], inf),
+	\bufnum, ~samples[1],
+	\amp, 0.20,
+	\rate, 2
+).play(~clock, quant: 4).quant = 4;
+
+Pbindef(\38,
+	\instrument, "playBuf",
+	\dur, Pseq([1,1,1/2, 1/2, 2], inf),
+	\bufnum, ~samples[12],
+	\amp, Pwhite(0.15, 0.3),
+	\rate, 1
+).play(~clock, quant: 4).quant = 4;
 )
 
 // Stop all Pbindefs

@@ -139,7 +139,7 @@ SynthDef.new("playBuf3", { arg bufnum, startPos = 0, amp = 0.5, gate = 1, rate =
 // =====================================================
 
 // Create a clock to run the Pbindefs with
-~clock = TempoClock.new(1).permanent_(true);
+~clock = TempoClock.new(2).permanent_(true);
 
 // I'll use the button number as the Pbindef name
 (

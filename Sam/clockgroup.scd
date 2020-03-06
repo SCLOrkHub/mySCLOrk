@@ -1,5 +1,5 @@
 
-SCLOrkChat.new("sam");
+SCLOrkChat.new("samiam");
 
 
 // ==================================

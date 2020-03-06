@@ -1,4 +1,4 @@
-SCLOrkChat.new("bbb");
+SCLOrkChat.new("bruno", true);
 
 // control + b to boot sound server
 

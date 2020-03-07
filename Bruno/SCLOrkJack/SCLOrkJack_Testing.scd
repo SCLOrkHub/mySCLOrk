@@ -15,24 +15,27 @@ SCLOrkJack.disconnectAll;
 
 
 
-
 // other methods available
 
+// Print info on Post Window
 SCLOrkJack.list;
-
 SCLOrkJack.listPorts;
-
-SCLOrkJack.collectPorts;
-
+SCLOrkJack.listSources;
+SCLOrkJack.listDestinations;
 SCLOrkJack.listConnections;
-
-SCLOrkJack.collectConnections;
-
 SCLOrkJack.listProperties;
-
-SCLOrkJack.collectProperties;
-
 SCLOrkJack.listTypes;
+
+
+// Collect data into arrays
+SCLOrkJack.collectPorts;
+SCLOrkJack.collectConnections;
+SCLOrkJack.collectProperties;
+SCLOrkJack.collectSources;
+
+~wow
+~wow2.includes(~wow[2]);
+~wow2 = SCLOrkJack.collectSources.collect({ |i| i.asSymbol });
 
 SCLOrkJack.isAvailable("PulseAudio JACK Source:front-left");
 

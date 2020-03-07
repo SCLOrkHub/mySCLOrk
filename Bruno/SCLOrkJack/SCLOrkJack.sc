@@ -31,6 +31,53 @@ SCLOrkJack {
 
 	}
 
+	// List only "source" ports (readable)
+	*listSources {
+		var sources = Array.new;
+		var properties = SCLOrkJack.collectProperties;
+		properties.do({ |port, index|
+			if(index.even, {
+				if(properties[index+1][0]=="output", {
+					sources = sources.add(port)
+				})
+			});
+		});
+		"=============".postln;
+		"Jack Sources:".postln;
+		"=============".postln;
+		sources.do({|i| i.postln});
+	}
+
+	*collectSources {
+		var sources = Array.new;
+		var properties = SCLOrkJack.collectProperties;
+		properties.do({ |port, index|
+			if(index.even, {
+				if(properties[index+1][0]=="output", {
+					sources = sources.add(port)
+				})
+			});
+		});
+		^sources;
+	}
+
+	// List only "destination" ports (writable)
+	*listDestinations {
+		var destinations = Array.new;
+		var properties = SCLOrkJack.collectProperties;
+		properties.do({ |port, index|
+			if(index.even, {
+				if(properties[index+1][0]=="input", {
+					destinations = destinations.add(port)
+				})
+			});
+		});
+		"==================".postln;
+		"Jack Destinations:".postln;
+		"==================".postln;
+		destinations.do({|i| i.postln});
+	}
+
 	// Returns Array with all available port names, no formatting
 	*listConnections {
 
@@ -59,9 +106,12 @@ SCLOrkJack {
 			})
 		});
 
+		// THE ABOVE MAY BE WRONG, lAST DESTINATION ARRAY NEVER GETS ADDED?
+
 		^connections;
 
 	}
+
 
 
 	// Returns Array with all available port names, no formatting

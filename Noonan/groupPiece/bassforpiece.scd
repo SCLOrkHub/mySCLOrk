@@ -8,10 +8,10 @@ Ndef(\bass, {
 	harmonics = [0.99, 1, 1.01, 2, 1.99, 2.99, 3.0, 4.0, 4.999, 6.0];
 	amplitudes = [0.1, 0.9, 0.2, 0.25, 0.25, 0.2, 0.2, 0.15, 0.1, 0.05];
 
-		snd = Saw.ar(freq * harmonics, amplitudes*0.25);
+	snd = Saw.ar(freq * harmonics, amplitudes*0.25);
 	snd2 = SinOsc.ar(freq); // * LFTri.ar(5).range(0, 1);
 
-	snd = (snd * 0.5) + (snd2 * 0.4);
+	snd = (snd * 0.5) + (snd2 * 0.5);
 
 	snd = HPF.ar(snd, 50);
 
@@ -21,7 +21,7 @@ Ndef(\bass, {
 )
 
 (
-Ndef(\bass).fadeTime = 8;
+Ndef(\bass).fadeTime = 4;
 Ndef(\bass, {
 	var freq, snd, snd2, harmonics, amplitudes;
 
@@ -31,9 +31,9 @@ Ndef(\bass, {
 	amplitudes = [0.1, 0.9, 0.2, 0.25, 0.25, 0.2, 0.2, 0.15, 0.1, 0.05];
 
 	snd = Saw.ar(freq * harmonics, amplitudes*0.25);
-	snd2 = SinOsc.ar([freq-7, freq, freq+5, freq+11]); // * LFTri.ar(5).range(0, 1);
+	snd2 = SinOsc.ar([freq-2, freq, freq+1, freq+3]); // * LFTri.ar(5).range(0, 1);
 
-	snd = (snd * 0.5) + (snd2 * 0.5);
+	snd = (snd * 0.6) + (snd2 * 0.4);
 
 	snd = HPF.ar(snd, 50);
 
@@ -60,7 +60,7 @@ Ndef(\bass, {
 
 	snd = HPF.ar(snd, 50);
 
-	snd = Limiter.ar(LeakDC.ar(Mix.ar(snd)), 0.5);
+	snd = Limiter.ar(LeakDC.ar(Mix.ar(snd)), 0.0);
 	snd = LeakDC.ar(snd);
 }).play;
 )

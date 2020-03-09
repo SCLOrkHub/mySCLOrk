@@ -205,6 +205,8 @@ SCLOrkJack {
 
 		("jack_disconnect \"" ++ from ++ "\" \"" ++ to ++ "\"").unixCmd;
 
+		("jack_disconnect \"" ++ from ++ "\" \"" ++ to ++ "\"").postln;
+
 		if(SCLOrkJack.isAvailable(from).not, {
 			("WARNING: [disconnect] could not find port " ++ from).postln;
 		});
@@ -286,53 +288,107 @@ SCLOrkJack {
 
 		if(path.notNil, {
 			loadFunction.value(path);
-			"path was not nil".postln;
 		}, {
 			"path was nil, go for dialog".postln;
 			Dialog.openPanel(loadFunction);
 		});
 	}
 
+
+	// code stolen from SCLOrkQuNeo. Adapt it to use SCLOrkJack methods
+	*preset { |symbol|
+
+		switch(symbol,
+
+			\quneo, {
+				var pipe = Pipe.new("jack_lsp", "r");
+				var line = pipe.getLine; // get the first line right away
+				var qOut, qIn;
+				var scOut, scIn;
+
+				// go through all available ports (overkill, but OK for now)
+				while({ line.notNil }, {
+					// make sure it's a string
+					line = line.asString;
+
+					// Is this a QuNeo port? If so, save it
+					if(line.containsi("QUNEO"), {
+						if(line.containsi("capture"), { qOut = line });
+						if(line.containsi("playback"), { qIn = line });
+					});
+
+					// Is this a SuperCollider MIDI port? If so, save it
+					if(line.containsi("a2j:SuperCollider"), {
+						if(line.containsi("out0"), { scOut = line });
+						if(line.containsi("in0"), { scIn = line });
+					});
+
+					// get a new line before while runs again
+					line = pipe.getLine;
+				});
+				pipe.close;
+				["qOut", qOut].postln;
+				["qIn", qIn].postln;
+				["scOut", scOut].postln;
+				["scIn", scIn].postln;
+
+				// Make the right connections
+				if( (qOut.notNil) && (qIn.notNil) && (scOut.notNil) && (scIn.notNil), {
+					("jack_connect \"" ++ qOut ++ "\" \"" ++ scIn ++ "\"").unixCmd;
+					("jack_connect \"" ++ qIn ++ "\" \"" ++ scOut ++ "\"").unixCmd;
+				}, {
+					"Some of the ports could not be found, no connections made".postln;
+				})
+			},
+			\nano, { "nano".postln },
+			\rec, { "recording".postln; }
+		);
+
+
+
+
+	}
+
 }
 
 
 
-	/*
+/*
 
-	// obsolete
+// obsolete
 
-	// function needed to find number of padding white spaces in string results from terminal
-	*prFindIndexOfFirstNonWhiteSpace { |string|
+// function needed to find number of padding white spaces in string results from terminal
+*prFindIndexOfFirstNonWhiteSpace { |string|
 
-		var firstIndexThatIsNotWhiteSpace = 0;
-		var index = 0;
-		var ascii;
+var firstIndexThatIsNotWhiteSpace = 0;
+var index = 0;
+var ascii;
 
-		// in case white space comes out as [ 32 ] instead of number 32
-		ascii = if(string[index].ascii.isNumber, { string[index].ascii }, { string[index][0].ascii });
-		while( {
-			ascii==32
-		}, {
-			index = index + 1;
-			firstIndexThatIsNotWhiteSpace = index;
-			ascii = if(string[index].ascii.isNumber, { string[index].ascii }, { string[index][0].ascii });
-		});
+// in case white space comes out as [ 32 ] instead of number 32
+ascii = if(string[index].ascii.isNumber, { string[index].ascii }, { string[index][0].ascii });
+while( {
+ascii==32
+}, {
+index = index + 1;
+firstIndexThatIsNotWhiteSpace = index;
+ascii = if(string[index].ascii.isNumber, { string[index].ascii }, { string[index][0].ascii });
+});
 
-		^firstIndexThatIsNotWhiteSpace;
-	}
+^firstIndexThatIsNotWhiteSpace;
+}
 
-	// function needed to drop those padding white spaces from beginning of string
-	*prDropBeginningWhiteSpace { |string|
+// function needed to drop those padding white spaces from beginning of string
+*prDropBeginningWhiteSpace { |string|
 
-		^string.drop(this.prFindIndexOfFirstNonWhiteSpace(string));
-
-
-	}
+^string.drop(this.prFindIndexOfFirstNonWhiteSpace(string));
 
 
+}
 
-	*/
- // end of Class code
+
+
+*/
+// end of Class code
 
 
 

@@ -33,6 +33,7 @@ SCLOrkJack.collectConnections;
 SCLOrkJack.collectProperties;
 SCLOrkJack.collectTypes;
 SCLOrkJack.collectSources;
+SCLOrkJack.collecta2j;
 
 SCLOrkJack.isAvailable("PulseAudio JACK Source:front-left");
 
@@ -55,9 +56,19 @@ SCLOrkJack.loadConnectionsFromFile;
 // directly using an array of connections:
 SCLOrkJack.connectAllFrom( List[ List[ "system:capture_1", "SuperCollider:in_1" ], List[ "system:capture_2", "SuperCollider:in_2" ], List[ "PulseAudio JACK Sink:front-left", "system:playback_1" ], List[ "PulseAudio JACK Sink:front-right", "system:playback_2" ], List[ "aeolus:out.L", "system:playback_1" ], List[ "aeolus:out.R", "system:playback_2" ], List[ "a2j:Virtual Keyboard [130] (capture): Virtual Keyboard", "aeolus:Midi/in" ], List[ "SuperCollider:out_1", "system:playback_1" ], List[ "SuperCollider:out_2", "system:playback_2" ] ] );
 
+
+// checks if this is an a2j port; and if it is, checks whether there is an existing matching port
+// returns the actual existing a2j port, if any; or original port if not a2j
+SCLOrkJack.a2jTest("a2j:Virtual Keyboard [89881] (capture): Virtual Keyboard")
+SCLOrkJack.a2jTest("a2j:Virtual Keyboard [131] (capture): banana wrong")
+SCLOrkJack.a2jTest("SuperCollider:out_1")
+
+
 SCLOrkJack.preset(\quneo);
 
 
+
+regexp
 // next step: create a few internal, SCLOrk-specific presets
 // for example,
 

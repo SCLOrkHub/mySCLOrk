@@ -201,6 +201,33 @@ SCLOrkJack {
 
 	}
 
+	// Returns Array with all available a2j port names
+	*collecta2j {
+
+		var list = "jack_lsp".unixCmdGetStdOutLines;
+		var a2j = List.new;
+		list.do({ |port|
+			if(port.beginsWith("a2j:"), {
+				a2j.add(port)
+			});
+		});
+		^a2j;
+	}
+
+	*a2jTest { |candidatePort|
+		var foundPort = false;
+		if(candidatePort.beginsWith("a2j"), {
+			SCLOrkJack.collecta2j.do({ |existingPort|
+				var test = existingPort.split($])[1] == candidatePort.split($])[1];
+				if(test, { foundPort = true; ^existingPort.asString })
+			});
+			if(foundPort.not, { "WARNING: no matching a2j port could be found".postln })
+		}, {
+			^candidatePort
+		})
+
+	}
+
 	// Connects two ports.
 	// Expects precise port names as strings
 	*connect { |from, to|
@@ -256,9 +283,12 @@ SCLOrkJack {
 	// [["from1", "to1", "to2"], ["from2", "to1", "to6"] ...]
 	*connectAllFrom { |item|
 		item.do({ |list|
+			// check any a2j match for "from" port
+			var from = SCLOrkJack.a2jTest(list[0]);
 			list.do({ |port, index|
 				if(index>0, {
-					SCLOrkJack.connect(list[0], port);
+					var to = SCLOrkJack.a2jTest(port);
+					SCLOrkJack.connect(from, to);
 				})
 			});
 		})

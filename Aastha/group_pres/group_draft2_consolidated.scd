@@ -1,5 +1,6 @@
 SCLOrkChat.new("aastha");
 
+(
 b = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/children-laughing1.wav");
 g = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/goodnight2.wav");
 h = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/highlaughing.wav");
@@ -10,6 +11,7 @@ u = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/i hate u.wav");
 m = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/midtermq.wav");
 o = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/money.wav");
 x = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/good_enough.wav");
+)
 
 // noonan's goodnight:
 (
@@ -209,7 +211,7 @@ Ndef(\mic, {
 }).play;
 )
 
-Ndef(\mic).stop;
+Ndef(\mic).clear(20);
 
 // STOP EVERYTHING THAT IS PLAYING!!!!
 Ndef.clear(20);
@@ -236,5 +238,6 @@ Ndef(\alarm, {
 )
 
 Ndef(\alarm).clear(30); // done yo
+
 
 

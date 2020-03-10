@@ -81,36 +81,55 @@ SCLOrkJack {
 	// Returns Array with all available port names, no formatting
 	*listConnections {
 
-		^"jack_lsp -c".unixCmdGetStdOut;
+		var connectionList = SCLOrkJack.collectConnections;
+		connectionList.do({ |list|
+			list.do({ |port, index|
+				if(index==0, {
+					" ".postln;
+					port.postln
+				}, {
+					("--> " ++ port).postln;
+				})
+			});
+		});
 
 	}
+
 
 	*collectConnections {
 
-		var stdout, from, to, connections, destinations;
+		var stdout, sourceList, validSource, connectionList;
 
 		stdout = "jack_lsp -c".unixCmdGetStdOutLines;
-		connections = Array.new;
-		destinations = Array.new;
+		sourceList = SCLOrkJack.collectSources.collect({ |i| i.asSymbol });
+		connectionList = List.new;
 
-		stdout.do({ |port|
-			if(port.beginsWith("   "), {
-				to = port.drop(3);
-				destinations = destinations.add(to);
+		stdout.do({ |port, index|
+			if(port.beginsWith("   ").not, {
+				if(sourceList.includes(port.asSymbol), {
+					if(stdout[index+1].notNil, {
+						if(stdout[index+1].beginsWith("   "),
+							{
+								validSource = true;
+								connectionList.add(List[port])
+							}, {
+								validSource = false;
+						})
+					})
+				}, { validSource = false })
 			}, {
-				if(destinations.size > 0, {
-					connections = connections.add(destinations)
+				if(validSource, {
+					connectionList.last.add(port.drop(3));
 				});
-				destinations = Array.new; // refresh destination list
-				connections = connections.add(port); // this port is a from, so add it right away
-			})
+			});
+
+
 		});
 
-		// THE ABOVE MAY BE WRONG, lAST DESTINATION ARRAY NEVER GETS ADDED?
-
-		^connections;
+		^connectionList;
 
 	}
+
 
 
 
@@ -148,14 +167,15 @@ SCLOrkJack {
 	}
 
 
+	*listTypes {
 
+		^"jack_lsp -t".unixCmdGetStdOut;
 
-
-
+	}
 
 	// Returns Array of ports and types (audio or midi)
 	// [<available port>, <port type>, <available port2>, <port2 type> ...]
-	*listTypes {
+	*collectTypes {
 
 		^"jack_lsp -t".unixCmdGetStdOutLines;
 
@@ -165,7 +185,7 @@ SCLOrkJack {
 	// Prints sorted list on Post Window
 	*list {
 
-		var list = SCLOrkJack.listTypes.clump(2);
+		var list = SCLOrkJack.collectTypes.clump(2);
 
 		list = list.collect({ |i|
 			var port, type;
@@ -219,41 +239,29 @@ SCLOrkJack {
 
 
 	// Disconnect all current connections (audio and midi).
-	// Array obtained through collectConnections is organized this way:
-	// ["from1", ["to1", "to2"], "from2", "from3", ["to6"] ..]
+	// List obtained through collectConnections is organized this way:
+	// [["from1", "to1", "to2"], ["from2", "to1", "to6"] ...]
 	*disconnectAll {
-		var from, to;
-		SCLOrkJack.collectConnections.do({ |item|
-			if(item.isString, {
-				from = item;
-			}, {
-				if(item.isArray, {
-					item.do({ |port|
-						to = port;
-						SCLOrkJack.disconnect(from, to);
-					})
-				});
+		SCLOrkJack.collectConnections.do({ |list|
+			list.do({ |port, index|
+				if(index>0, {
+					SCLOrkJack.disconnect(list[0], port);
+				})
 			});
-		});
+		})
 	}
 
-	// Cconnect several ports from a given connections array (audio and midi).
-	// Array should be organized this way:
-	// ["from1", ["to1", "to2"], "from2", "from3", ["to6"] ..]
-	*connectAllFrom { |array|
-		var from, to;
-		array.do({ |item|
-			if(item.isString, {
-				from = item;
-			}, {
-				if(item.isArray, {
-					item.do({ |port|
-						to = port;
-						SCLOrkJack.connect(from, to);
-					})
-				});
+	// Cconnect several ports from given connections list (audio&midi).
+	// List should be organized this way:
+	// [["from1", "to1", "to2"], ["from2", "to1", "to6"] ...]
+	*connectAllFrom { |item|
+		item.do({ |list|
+			list.do({ |port, index|
+				if(index>0, {
+					SCLOrkJack.connect(list[0], port);
+				})
 			});
-		});
+		})
 	}
 
 	// Checks if a port is currently available

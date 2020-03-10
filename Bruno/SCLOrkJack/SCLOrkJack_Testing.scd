@@ -31,11 +31,8 @@ SCLOrkJack.listTypes;
 SCLOrkJack.collectPorts;
 SCLOrkJack.collectConnections;
 SCLOrkJack.collectProperties;
+SCLOrkJack.collectTypes;
 SCLOrkJack.collectSources;
-
-~wow
-~wow2.includes(~wow[2]);
-~wow2 = SCLOrkJack.collectSources.collect({ |i| i.asSymbol });
 
 SCLOrkJack.isAvailable("PulseAudio JACK Source:front-left");
 
@@ -56,7 +53,7 @@ SCLOrkJack.saveCurrentConnections;
 SCLOrkJack.loadConnectionsFromFile;
 
 // directly using an array of connections:
-SCLOrkJack.connectAllFrom( [ "system:capture_1", [ "SuperCollider:in_1" ], "system:capture_2", [ "SuperCollider:in_2" ], "system:playback_1", [ "PulseAudio JACK Sink:front-left", "yoshimi:left", "SuperCollider:out_1" ], "system:playback_2", [ "PulseAudio JACK Sink:front-right", "yoshimi:right", "SuperCollider:out_1" ], "PulseAudio JACK Sink:front-left", [ "system:playback_1" ], "PulseAudio JACK Sink:front-right", [ "system:playback_2" ], "PulseAudio JACK Source:front-left", "PulseAudio JACK Source:front-right", "a2j:Midi Through [14] (capture): Midi Through Port-0", "a2j:Midi Through [14] (playback): Midi Through Port-0", "yoshimi:left", [ "system:playback_1" ], "yoshimi:right", [ "system:playback_2" ], "yoshimi:midi in", [ "a2j:nanoKONTROL2 [20] (capture): nanoKONTROL2 MIDI 1" ], "SuperCollider:in_1", [ "system:capture_1" ], "SuperCollider:in_2", [ "system:capture_2" ], "SuperCollider:out_1", [ "system:playback_1", "system:playback_2" ], "SuperCollider:out_2", "a2j:nanoKONTROL2 [20] (capture): nanoKONTROL2 MIDI 1", [ "yoshimi:midi in" ], "a2j:nanoKONTROL2 [20] (playback): nanoKONTROL2 MIDI 1" ]);
+SCLOrkJack.connectAllFrom( List[ List[ "system:capture_1", "SuperCollider:in_1" ], List[ "system:capture_2", "SuperCollider:in_2" ], List[ "PulseAudio JACK Sink:front-left", "system:playback_1" ], List[ "PulseAudio JACK Sink:front-right", "system:playback_2" ], List[ "aeolus:out.L", "system:playback_1" ], List[ "aeolus:out.R", "system:playback_2" ], List[ "a2j:Virtual Keyboard [130] (capture): Virtual Keyboard", "aeolus:Midi/in" ], List[ "SuperCollider:out_1", "system:playback_1" ], List[ "SuperCollider:out_2", "system:playback_2" ] ] );
 
 SCLOrkJack.preset(\quneo);
 

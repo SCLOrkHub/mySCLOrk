@@ -139,7 +139,7 @@ SynthDef.new("playBuf3", { arg bufnum, startPos = 0, amp = 0.5, gate = 1, rate =
 // =====================================================
 
 // Create a clock to run the Pbindefs with
-~clock = TempoClock.new(2).permanent_(true);
+// ~clock = TempoClock.new(2).permanent_(true);
 
 // I'll use the button number as the Pbindef name
 (
@@ -199,6 +199,14 @@ Pbindef(\41,
 	\dur, 1/4
 ).play(~clock, quant: 1).quant = 1;
 
+
+Pbindef(\42,
+	\type, \rest,
+	\onOff, 1,
+	\mute, Pseq([1, 0, 1, 0, 1], inf) * Pkey(\onOff), // fun 5 list
+	\test, Pfunc({ |ev| Ndef(\42).set(\amp, ev[\mute] )}),
+	\dur, 1/4
+).play(~clock, quant: 1).quant = 1;
 
 
 // . add others here
@@ -286,6 +294,8 @@ Pbindef(\51,
 // Pbindef.all.do({ |p| p.stop });
 
 Pbindef(\41).clear
+Pbindef(\40).clear
+Pbindef(\42).clear
 
 // =====================================================
 // Play on QuNeo
@@ -370,6 +380,12 @@ Pbindef(\40, \mute, Pseq([1, 0], inf)); // bring it back
 Pbindef(\41, \mute, 0); // mute whole effect
 Pbindef(\41, \mute, Pseq([1, 0], inf)); // bring it back
 
+Pbindef(\42, \mute, 0); // mute whole effect
+Pbindef(\42, \mute, Pseq([1, 0], inf)); // bring it back
+
+Pbindef(\43, \mute, 0); // mute whole effect
+Pbindef(\43, \mute, Pseq([1, 0], inf)); // bring it back
+
 
 // notes from bruno:
 // do more variatin in the notes
@@ -385,37 +401,3 @@ Pbindef(\41, \mute, Pseq([1, 0], inf)); // bring it back
 //
 
 
-
-
-
-//__________
-
-// ++ code copied from sam
-/*(
-q.onButtonChange = { |velocity, midinote|
-// if velocity is greater than zero, play sample; otherwise, just ignore if velocity = 0
-// first QuNeo button (36) will play sample at index 0
-// 37 plays sample at index 1
-// 38 plays sample at index 2
-// etc
-if(velocity>0, {
-// Play the Pbindef named with corresponding midinote number:
-Pbindef(midinote.asSymbol).play(~clock, quant: 4).quant = 4;
-["Button", midinote].postln;
-}, {
-// when velocity = 0,
-Pbindef(midinote.asSymbol).stop;
-});
-};
-)*/
-// -- end of copied code
-
-// ++ code copied from sam
-Pbindef(\38,
-	\instrument, "playBuf",
-	\dur, Pseq([1, Rest(1), 5/16, 3/16, 1/2, Rest(7/8), 1/8, 1/2, Rest(1/2), Rest(1), 1, Rest(1) ], inf),
-	\bufnum, ~samples[12],
-	\amp, 0.3,
-	\rate, 1
-).play(~clock, quant: 4).quant = 4;
-// -- end of copied code

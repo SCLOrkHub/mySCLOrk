@@ -99,6 +99,6 @@ Ndef(\wow, {
 )
 
 (
-Ndef(\superWeirdAmp, { DC.kr(0.6) });
-Ndef(\wowAmp, { DC.kr(0.6) });
+Ndef(\superWeirdAmp, { DC.kr(0.4) });
+Ndef(\wowAmp, { DC.kr(0.7) });
 )

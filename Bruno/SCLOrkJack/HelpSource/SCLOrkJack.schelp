@@ -1,0 +1,182 @@
+TITLE:: SCLOrkJack
+summary:: Utility to manage Jack connections (Linux only)
+categories:: Quarks>SCLOrkTools
+
+DESCRIPTION::
+You can use SCLOrkJack to manage all your Jack connections (audio and MIDI) without ever having to leave SuperCollider. In addition to basic commands like connect or disconnect two ports, SCLOrkJack also implements a method to save all current connections into a file, like a preset that you can reload anytime later.
+
+The class assumes SuperCollider is running on a Linux computer with the Jack Audio Connection Kit handling both audio and MIDI (the default setup in the Santa Clara Laptop Orchestra). It assumes that ALSA MIDI connections are visible to Jack through the a2jmidid tool (in SCLOrk, our QJackCtl is set to run a2jmidid -e & at start up).
+
+SCLOrkJack is inspired by STRONG::jmess:: by Juan Pablo-Caceres and STRONG::SCJConnection:: by Marije Baalman. Like SCJConnection, SCLOrkJack is an encapsulation of calls to the command line tools jack_connect, jack_disconnect, and jack_lsp.
+
+CLASSMETHODS::
+
+METHOD:: listPorts
+Lists all available ports (audio and MIDI, inputs and outputs).
+
+METHOD:: collectPorts
+Same as listPorts, but returns an Array with all ports.
+returns:: an Array
+
+METHOD:: listProperties
+Lists all available ports and their respective properties.
+
+METHOD:: collectSources
+Like collectPorts, but only returns ports that are sources ("readable"), not destinations ("writable").
+
+returns:: an Array
+
+METHOD:: connectAllFrom
+Connects ports from given connections list (audio & midi).
+
+ARGUMENT:: connectionArray
+A List or Array specifying ports to be connected. It should be organized this way: [["from1", "to1", "to2"], ["from2", "to1", "to6"] ...], where each sub-array contains a source at index 0, and corresponding destinations at indices 1 and above.
+
+METHOD:: preset
+Allows user to recall connection presets that are commonly used in SCLOrk.
+
+ARGUMENT:: symbol
+A symbol name of the preset. Available presets are:
+
+code::\quneo:: connects the QuNeo MIDI controller to and from SuperCollider.
+
+code::\nano:: connects the Korg nanoKONTROL2 MIDI controller to and from SuperCollider.
+
+code::\recording:: connects SuperCollider:out_1 to system:playback_2 (typical SCLOrk set-up for recording, where we send the same mono signal that goes to the single speaker to output 2 of the audio interface, which then goes directly to a recording interface.
+
+
+METHOD:: saveCurrentConnections
+Opens a dialog box where you can specify file name and location where to save the list of current connections. Contents of the file will simply be an Array. Use extension *.scd like any other SuperCollider file.
+
+METHOD:: loadConnectionsFromFile
+Make all connections specified in the file provided. If a path to the file is not provided, opens a dialog box to select preset file.
+
+ARGUMENT:: path
+Path to the connections file you wish to load.
+
+
+METHOD:: collectProperties
+Returns an Array of all ports and their corresponding properties.
+
+METHOD:: a2jTest
+In Linux, ALSA MIDI connections may change numbers in impredictable ways. A QuNeo may have the number [20] in its port name, while at another machine it may have the number [24] instead. Given a port name (as a String), this method first checks if this is an a2j port; and if it is, checks whether there is an existing matching port on this computer, ignoring the possible change in number.
+
+
+ARGUMENT:: candidatePort
+The port name (as String) that you want to check.
+
+returns:: the actual existing a2j port, if any; or just candidatePort if not a2j.
+
+
+METHOD:: collectConnections
+Returns a clean list of collections with no duplications. Each sub-list contains a source port (at index 0) and destination ports connected to it.
+
+returns:: an Array
+
+METHOD:: disconnectAll
+Disconnects all current connections, Audio and MIDI.
+
+METHOD:: collectTypes
+Returns an Array of all available ports and their types.
+
+METHOD:: listDestinations
+Lists all available destination ports only (no sources).
+
+METHOD:: connect
+Connects two ports.
+
+ARGUMENT:: from
+A valid audio or MIDI port.
+
+ARGUMENT:: to
+A valid audio or MIDI port.
+
+METHOD:: listTypes
+Lists all available types and their types.
+
+METHOD:: list
+Like listPorts, but prepends AUDIO: or MIDI: before each line.
+
+METHOD:: disconnect
+Disconnects two ports.
+
+ARGUMENT:: from
+A valid audio or MIDI port.
+
+ARGUMENT:: to
+A valid audio or MIDI port.
+
+METHOD:: collecta2j
+Returns an Array with all available a2j MIDI port names.
+
+METHOD:: isAvailable
+Returns true if the port name currently exists, false otherwise.
+
+ARGUMENT:: port
+A port name as a String
+
+returns:: a Boolean
+
+METHOD:: listSources
+Lists all available source ports.
+
+METHOD:: listConnections
+Lists all available connections.
+
+
+EXAMPLES::
+
+code::
+
+// Print info on Post Window
+SCLOrkJack.list;
+SCLOrkJack.listPorts;
+SCLOrkJack.listSources;
+SCLOrkJack.listDestinations;
+SCLOrkJack.listConnections;
+SCLOrkJack.listProperties;
+SCLOrkJack.listTypes;
+
+
+// Collect data into arrays
+SCLOrkJack.collectPorts;
+SCLOrkJack.collectConnections;
+SCLOrkJack.collectProperties;
+SCLOrkJack.collectTypes;
+SCLOrkJack.collectSources;
+SCLOrkJack.collecta2j;
+
+SCLOrkJack.isAvailable("PulseAudio JACK Source:front-left");
+
+SCLOrkJack.connect(from: "PulseAudio JACK Sink:front-left", to: "system:playback_1");
+
+SCLOrkJack.disconnect(from: "PulseAudio JACK Sink:front-left", to: "system:playback_1");
+
+// wrong port name throws a warning
+SCLOrkJack.disconnect(from: "banana:mic1", to: "system:playback_1");
+
+// disconnect all existing connections (audio and midi)
+SCLOrkJack.disconnectAll;
+
+// opens dialog box, save snapshot of all current connections into a file
+SCLOrkJack.saveCurrentConnections;
+
+// load connections file. If path not provided, opens a dialog box
+SCLOrkJack.loadConnectionsFromFile;
+
+// Make connections based on a given connection list:
+SCLOrkJack.connectAllFrom( [ [ "system:capture_1", "SuperCollider:in_1" ], [ "system:capture_2", "SuperCollider:in_2" ], [ "PulseAudio JACK Sink:front-left", "system:playback_1" ], [ "PulseAudio JACK Sink:front-right", "system:playback_2" ], [ "aeolus:out.L", "system:playback_1" ], [ "aeolus:out.R", "system:playback_2" ], [ "a2j:Virtual Keyboard [130] (capture): Virtual Keyboard", "aeolus:Midi/in" ], [ "SuperCollider:out_1", "system:playback_1" ], [ "SuperCollider:out_2", "system:playback_2" ] ] );
+
+
+// checks if this is an a2j port; and if it is, checks whether there is an existing matching port
+// returns the actual existing a2j port, if any; or original port if not a2j
+SCLOrkJack.a2jTest("a2j:Virtual Keyboard [89881] (capture): Virtual Keyboard")
+SCLOrkJack.a2jTest("a2j:Virtual Keyboard [131] (capture): banana wrong")
+SCLOrkJack.a2jTest("SuperCollider:out_1")
+
+// opens a built-in preset
+SCLOrkJack.preset(\quneo);
+
+
+
+::

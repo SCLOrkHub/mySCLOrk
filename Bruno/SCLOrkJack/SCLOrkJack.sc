@@ -126,7 +126,7 @@ SCLOrkJack {
 
 		});
 
-		^connectionList;
+		^connectionList.asArray;
 
 	}
 
@@ -211,7 +211,7 @@ SCLOrkJack {
 				a2j.add(port)
 			});
 		});
-		^a2j;
+		^a2j.asArray;
 	}
 
 	*a2jTest { |candidatePort|
@@ -281,8 +281,8 @@ SCLOrkJack {
 	// Cconnect several ports from given connections list (audio&midi).
 	// List should be organized this way:
 	// [["from1", "to1", "to2"], ["from2", "to1", "to6"] ...]
-	*connectAllFrom { |item|
-		item.do({ |list|
+	*connectAllFrom { |connectionArray|
+		connectionArray.do({ |list|
 			// check any a2j match for "from" port
 			var from = SCLOrkJack.a2jTest(list[0]);
 			list.do({ |port, index|

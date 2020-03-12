@@ -6,6 +6,8 @@ o.memSize = 8192 * 4;
 
 SCLOrkChat.new("noonan");
 
+
+
 (
 SynthDef("Wobbly Organ", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pan = 0, vibratoSpeed = 8, vibratoAmount = 0.1, gate = 1;
 	var snd, env, harmonics, amplitudes, midinote, vibrato;
@@ -14,8 +16,8 @@ SynthDef("Wobbly Organ", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pa
 		releaseTime: rel
 	).kr(doneAction: 2, gate: gate);
 
-	harmonics = [1, 2, 4, 5, 6, 8, 10, 12];
-	amplitudes = [-9, -10, -11, -20, -25, -14, -16, -20].dbamp;
+	harmonics = [1, 2, 4, 5, 6, 8];
+	amplitudes = [-9, -10, -11, -20, -25, -14].dbamp;
 
 	vibrato = SinOsc.kr(vibratoSpeed).range(vibratoAmount.neg, vibratoAmount);
 	midinote = (freq * harmonics).cpsmidi + vibrato;
@@ -43,8 +45,8 @@ SynthDef("Wobbly Organ", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pa
 SynthDef("stringish", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pan = 0, gate = 1;
 	var snd, env, harmonics, amplitudes;
 
-	harmonics = [1/2, 1, 2, 3, 4, 5, 6];
-	amplitudes = [1/2, 1, 1/2, 1/3, 1/4, 1/5, 1/8];
+	harmonics = [1/2, 1, 2, 3, 4, 5];
+	amplitudes = [1/2, 1, 1/2, 1/3, 1/4, 1/5];
 
 	snd = LFTri.ar(
 		freq: freq*harmonics,
@@ -62,9 +64,6 @@ SynthDef("stringish", { arg freq = 440, amp = 0.1, att = 0.05, rel = 0.01, pan =
 		rq: 0.5,
 		mul: 2
 	).distort;
-
-	/*snd = HPF.ar(snd, 600).distort;
-	snd = LPF.ar(snd, 1200);*/
 
 	snd = FreeVerb.ar(in: snd, mix: 0.6, room: 0.8, damp: 1);
 
@@ -99,13 +98,7 @@ SynthDef(\cheapPiano1, {
 	snd = CombL.ar(hammer, delay, delay, 50 * amp);
 	snd = HPF.ar(snd, hollowness.linlin(0, 1, 50, 1000));
 	snd = snd * env;
-	/*snd = FreeVerb.ar(
-		in: snd,
-		mix: 0.3,
-		room: 0.8,
-		damp: 0.8,
-		mul: 2
-	);*/
+
 	snd = Limiter.ar(snd);
 	Out.ar(out, Pan2.ar(snd, pan));
 },
@@ -127,7 +120,7 @@ Pbindef(\organ,
 	\rel, 1,
 	\midinote, Pseq([43, 45, 47, 49], inf),
 	\legato, 0.9,
-	\amp, 0.4,
+	\amp, 0.3,
 	\pan, [-0.5, -0.25, 0, 0.25, 0.5]
 ).play(~clock, quant: 4).quant = 4;
 )
@@ -143,7 +136,6 @@ Pbindef(\wholeTone,
 )
 
 (
-// Pbindef(\organ).stop;
 Pbindef(\organ,
 	\instrument, "Wobbly Organ",
 	\dur, 8,
@@ -187,3 +179,5 @@ Pbindef(\wholeTone,
 )
 
 Pbindef(\wholeTone).stop;
+Pbindef(\pad).stop;
+Pbindef(\organ).stop;

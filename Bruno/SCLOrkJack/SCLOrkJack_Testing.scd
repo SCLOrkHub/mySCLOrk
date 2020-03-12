@@ -15,24 +15,25 @@ SCLOrkJack.disconnectAll;
 
 
 
-
 // other methods available
 
+// Print info on Post Window
 SCLOrkJack.list;
-
 SCLOrkJack.listPorts;
-
-SCLOrkJack.collectPorts;
-
+SCLOrkJack.listSources;
+SCLOrkJack.listDestinations;
 SCLOrkJack.listConnections;
-
-SCLOrkJack.collectConnections;
-
 SCLOrkJack.listProperties;
-
-SCLOrkJack.collectProperties;
-
 SCLOrkJack.listTypes;
+
+
+// Collect data into arrays
+SCLOrkJack.collectPorts;
+SCLOrkJack.collectConnections;
+SCLOrkJack.collectProperties;
+SCLOrkJack.collectTypes;
+SCLOrkJack.collectSources;
+SCLOrkJack.collecta2j;
 
 SCLOrkJack.isAvailable("PulseAudio JACK Source:front-left");
 
@@ -53,14 +54,28 @@ SCLOrkJack.saveCurrentConnections;
 SCLOrkJack.loadConnectionsFromFile;
 
 // directly using an array of connections:
-SCLOrkJack.connectAllFrom( [ "system:capture_1", [ "SuperCollider:in_1" ], "system:capture_2", [ "SuperCollider:in_2" ], "system:playback_1", [ "PulseAudio JACK Sink:front-left", "yoshimi:left", "SuperCollider:out_1" ], "system:playback_2", [ "PulseAudio JACK Sink:front-right", "yoshimi:right", "SuperCollider:out_1" ], "PulseAudio JACK Sink:front-left", [ "system:playback_1" ], "PulseAudio JACK Sink:front-right", [ "system:playback_2" ], "PulseAudio JACK Source:front-left", "PulseAudio JACK Source:front-right", "a2j:Midi Through [14] (capture): Midi Through Port-0", "a2j:Midi Through [14] (playback): Midi Through Port-0", "yoshimi:left", [ "system:playback_1" ], "yoshimi:right", [ "system:playback_2" ], "yoshimi:midi in", [ "a2j:nanoKONTROL2 [20] (capture): nanoKONTROL2 MIDI 1" ], "SuperCollider:in_1", [ "system:capture_1" ], "SuperCollider:in_2", [ "system:capture_2" ], "SuperCollider:out_1", [ "system:playback_1", "system:playback_2" ], "SuperCollider:out_2", "a2j:nanoKONTROL2 [20] (capture): nanoKONTROL2 MIDI 1", [ "yoshimi:midi in" ], "a2j:nanoKONTROL2 [20] (playback): nanoKONTROL2 MIDI 1" ]);
+SCLOrkJack.connectAllFrom( List[ List[ "system:capture_1", "SuperCollider:in_1" ], List[ "system:capture_2", "SuperCollider:in_2" ], List[ "PulseAudio JACK Sink:front-left", "system:playback_1" ], List[ "PulseAudio JACK Sink:front-right", "system:playback_2" ], List[ "aeolus:out.L", "system:playback_1" ], List[ "aeolus:out.R", "system:playback_2" ], List[ "a2j:Virtual Keyboard [130] (capture): Virtual Keyboard", "aeolus:Midi/in" ], List[ "SuperCollider:out_1", "system:playback_1" ], List[ "SuperCollider:out_2", "system:playback_2" ] ] );
+
+
+// checks if this is an a2j port; and if it is, checks whether there is an existing matching port
+// returns the actual existing a2j port, if any; or original port if not a2j
+SCLOrkJack.a2jTest("a2j:Virtual Keyboard [89881] (capture): Virtual Keyboard")
+SCLOrkJack.a2jTest("a2j:Virtual Keyboard [131] (capture): banana wrong")
+SCLOrkJack.a2jTest("SuperCollider:out_1")
+
+
+SCLOrkJack.preset(\quneo);
 
 
 
-
+regexp
 // next step: create a few internal, SCLOrk-specific presets
 // for example,
 
 // SCLOrkJack.preset(\quneo); // should connect any available quneo to SC in/out
 // SCLOrkJack.preset(\nano); // should connect any available quneo to SC in/out
 // SCLOrkJack.preset(\rec); // should connect SC out 1 to system playback 2
+
+
+// also: when saving a preset, sometimes a QuNeo port may show up with different number in another laptop. Build in a way to account for that.
+// in other words -- at moment of "load file" there must be a check. If port not found, check if there is another similar name (contains quneo, etc). Or make it explicit to midi ports that have a nubmer [].

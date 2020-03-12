@@ -31,37 +31,106 @@ SCLOrkJack {
 
 	}
 
+	// List only "source" ports (readable)
+	*listSources {
+		var sources = Array.new;
+		var properties = SCLOrkJack.collectProperties;
+		properties.do({ |port, index|
+			if(index.even, {
+				if(properties[index+1][0]=="output", {
+					sources = sources.add(port)
+				})
+			});
+		});
+		"=============".postln;
+		"Jack Sources:".postln;
+		"=============".postln;
+		sources.do({|i| i.postln});
+	}
+
+	*collectSources {
+		var sources = Array.new;
+		var properties = SCLOrkJack.collectProperties;
+		properties.do({ |port, index|
+			if(index.even, {
+				if(properties[index+1][0]=="output", {
+					sources = sources.add(port)
+				})
+			});
+		});
+		^sources;
+	}
+
+	// List only "destination" ports (writable)
+	*listDestinations {
+		var destinations = Array.new;
+		var properties = SCLOrkJack.collectProperties;
+		properties.do({ |port, index|
+			if(index.even, {
+				if(properties[index+1][0]=="input", {
+					destinations = destinations.add(port)
+				})
+			});
+		});
+		"==================".postln;
+		"Jack Destinations:".postln;
+		"==================".postln;
+		destinations.do({|i| i.postln});
+	}
+
 	// Returns Array with all available port names, no formatting
 	*listConnections {
 
-		^"jack_lsp -c".unixCmdGetStdOut;
+		var connectionList = SCLOrkJack.collectConnections;
+		connectionList.do({ |list|
+			list.do({ |port, index|
+				if(index==0, {
+					" ".postln;
+					port.postln
+				}, {
+					("--> " ++ port).postln;
+				})
+			});
+		});
 
 	}
+
 
 	*collectConnections {
 
-		var stdout, from, to, connections, destinations;
+		var stdout, sourceList, validSource, connectionList;
 
 		stdout = "jack_lsp -c".unixCmdGetStdOutLines;
-		connections = Array.new;
-		destinations = Array.new;
+		sourceList = SCLOrkJack.collectSources.collect({ |i| i.asSymbol });
+		connectionList = List.new;
 
-		stdout.do({ |port|
-			if(port.beginsWith("   "), {
-				to = port.drop(3);
-				destinations = destinations.add(to);
+		stdout.do({ |port, index|
+			if(port.beginsWith("   ").not, {
+				if(sourceList.includes(port.asSymbol), {
+					if(stdout[index+1].notNil, {
+						if(stdout[index+1].beginsWith("   "),
+							{
+								validSource = true;
+								connectionList.add(List[port])
+							}, {
+								validSource = false;
+						})
+					})
+				}, { validSource = false })
 			}, {
-				if(destinations.size > 0, {
-					connections = connections.add(destinations)
+				if(validSource, {
+					connectionList.last.add(port.drop(3));
 				});
-				destinations = Array.new; // refresh destination list
-				connections = connections.add(port); // this port is a from, so add it right away
-			})
+			});
+
+
 		});
 
-		^connections;
+		^connectionList.asArray;
 
 	}
+
+
 
 
 	// Returns Array with all available port names, no formatting
@@ -98,14 +167,15 @@ SCLOrkJack {
 	}
 
 
+	*listTypes {
 
+		^"jack_lsp -t".unixCmdGetStdOut;
 
-
-
+	}
 
 	// Returns Array of ports and types (audio or midi)
 	// [<available port>, <port type>, <available port2>, <port2 type> ...]
-	*listTypes {
+	*collectTypes {
 
 		^"jack_lsp -t".unixCmdGetStdOutLines;
 
@@ -115,7 +185,7 @@ SCLOrkJack {
 	// Prints sorted list on Post Window
 	*list {
 
-		var list = SCLOrkJack.listTypes.clump(2);
+		var list = SCLOrkJack.collectTypes.clump(2);
 
 		list = list.collect({ |i|
 			var port, type;
@@ -128,6 +198,33 @@ SCLOrkJack {
 		}).sort;
 
 		^list.do({ |i| i.postln });
+
+	}
+
+	// Returns Array with all available a2j port names
+	*collecta2j {
+
+		var list = "jack_lsp".unixCmdGetStdOutLines;
+		var a2j = List.new;
+		list.do({ |port|
+			if(port.beginsWith("a2j:"), {
+				a2j.add(port)
+			});
+		});
+		^a2j.asArray;
+	}
+
+	*a2jTest { |candidatePort|
+		var foundPort = false;
+		if(candidatePort.beginsWith("a2j"), {
+			SCLOrkJack.collecta2j.do({ |existingPort|
+				var test = existingPort.split($])[1] == candidatePort.split($])[1];
+				if(test, { foundPort = true; ^existingPort.asString })
+			});
+			if(foundPort.not, { "WARNING: no matching a2j port could be found".postln })
+		}, {
+			^candidatePort
+		})
 
 	}
 
@@ -155,6 +252,8 @@ SCLOrkJack {
 
 		("jack_disconnect \"" ++ from ++ "\" \"" ++ to ++ "\"").unixCmd;
 
+		("jack_disconnect \"" ++ from ++ "\" \"" ++ to ++ "\"").postln;
+
 		if(SCLOrkJack.isAvailable(from).not, {
 			("WARNING: [disconnect] could not find port " ++ from).postln;
 		});
@@ -167,41 +266,32 @@ SCLOrkJack {
 
 
 	// Disconnect all current connections (audio and midi).
-	// Array obtained through collectConnections is organized this way:
-	// ["from1", ["to1", "to2"], "from2", "from3", ["to6"] ..]
+	// List obtained through collectConnections is organized this way:
+	// [["from1", "to1", "to2"], ["from2", "to1", "to6"] ...]
 	*disconnectAll {
-		var from, to;
-		SCLOrkJack.collectConnections.do({ |item|
-			if(item.isString, {
-				from = item;
-			}, {
-				if(item.isArray, {
-					item.do({ |port|
-						to = port;
-						SCLOrkJack.disconnect(from, to);
-					})
-				});
+		SCLOrkJack.collectConnections.do({ |list|
+			list.do({ |port, index|
+				if(index>0, {
+					SCLOrkJack.disconnect(list[0], port);
+				})
 			});
-		});
+		})
 	}
 
-	// Cconnect several ports from a given connections array (audio and midi).
-	// Array should be organized this way:
-	// ["from1", ["to1", "to2"], "from2", "from3", ["to6"] ..]
-	*connectAllFrom { |array|
-		var from, to;
-		array.do({ |item|
-			if(item.isString, {
-				from = item;
-			}, {
-				if(item.isArray, {
-					item.do({ |port|
-						to = port;
-						SCLOrkJack.connect(from, to);
-					})
-				});
+	// Cconnect several ports from given connections list (audio&midi).
+	// List should be organized this way:
+	// [["from1", "to1", "to2"], ["from2", "to1", "to6"] ...]
+	*connectAllFrom { |connectionArray|
+		connectionArray.do({ |list|
+			// check any a2j match for "from" port
+			var from = SCLOrkJack.a2jTest(list[0]);
+			list.do({ |port, index|
+				if(index>0, {
+					var to = SCLOrkJack.a2jTest(port);
+					SCLOrkJack.connect(from, to);
+				})
 			});
-		});
+		})
 	}
 
 	// Checks if a port is currently available
@@ -236,53 +326,107 @@ SCLOrkJack {
 
 		if(path.notNil, {
 			loadFunction.value(path);
-			"path was not nil".postln;
 		}, {
 			"path was nil, go for dialog".postln;
 			Dialog.openPanel(loadFunction);
 		});
 	}
 
+
+	// code stolen from SCLOrkQuNeo. Adapt it to use SCLOrkJack methods
+	*preset { |symbol|
+
+		switch(symbol,
+
+			\quneo, {
+				var pipe = Pipe.new("jack_lsp", "r");
+				var line = pipe.getLine; // get the first line right away
+				var qOut, qIn;
+				var scOut, scIn;
+
+				// go through all available ports (overkill, but OK for now)
+				while({ line.notNil }, {
+					// make sure it's a string
+					line = line.asString;
+
+					// Is this a QuNeo port? If so, save it
+					if(line.containsi("QUNEO"), {
+						if(line.containsi("capture"), { qOut = line });
+						if(line.containsi("playback"), { qIn = line });
+					});
+
+					// Is this a SuperCollider MIDI port? If so, save it
+					if(line.containsi("a2j:SuperCollider"), {
+						if(line.containsi("out0"), { scOut = line });
+						if(line.containsi("in0"), { scIn = line });
+					});
+
+					// get a new line before while runs again
+					line = pipe.getLine;
+				});
+				pipe.close;
+				["qOut", qOut].postln;
+				["qIn", qIn].postln;
+				["scOut", scOut].postln;
+				["scIn", scIn].postln;
+
+				// Make the right connections
+				if( (qOut.notNil) && (qIn.notNil) && (scOut.notNil) && (scIn.notNil), {
+					("jack_connect \"" ++ qOut ++ "\" \"" ++ scIn ++ "\"").unixCmd;
+					("jack_connect \"" ++ qIn ++ "\" \"" ++ scOut ++ "\"").unixCmd;
+				}, {
+					"Some of the ports could not be found, no connections made".postln;
+				})
+			},
+			\nano, { "nano".postln },
+			\rec, { "recording".postln; }
+		);
+
+
+
+
+	}
+
 }
 
 
 
-	/*
+/*
 
-	// obsolete
+// obsolete
 
-	// function needed to find number of padding white spaces in string results from terminal
-	*prFindIndexOfFirstNonWhiteSpace { |string|
+// function needed to find number of padding white spaces in string results from terminal
+*prFindIndexOfFirstNonWhiteSpace { |string|
 
-		var firstIndexThatIsNotWhiteSpace = 0;
-		var index = 0;
-		var ascii;
+var firstIndexThatIsNotWhiteSpace = 0;
+var index = 0;
+var ascii;
 
-		// in case white space comes out as [ 32 ] instead of number 32
-		ascii = if(string[index].ascii.isNumber, { string[index].ascii }, { string[index][0].ascii });
-		while( {
-			ascii==32
-		}, {
-			index = index + 1;
-			firstIndexThatIsNotWhiteSpace = index;
-			ascii = if(string[index].ascii.isNumber, { string[index].ascii }, { string[index][0].ascii });
-		});
+// in case white space comes out as [ 32 ] instead of number 32
+ascii = if(string[index].ascii.isNumber, { string[index].ascii }, { string[index][0].ascii });
+while( {
+ascii==32
+}, {
+index = index + 1;
+firstIndexThatIsNotWhiteSpace = index;
+ascii = if(string[index].ascii.isNumber, { string[index].ascii }, { string[index][0].ascii });
+});
 
-		^firstIndexThatIsNotWhiteSpace;
-	}
+^firstIndexThatIsNotWhiteSpace;
+}
 
-	// function needed to drop those padding white spaces from beginning of string
-	*prDropBeginningWhiteSpace { |string|
+// function needed to drop those padding white spaces from beginning of string
+*prDropBeginningWhiteSpace { |string|
 
-		^string.drop(this.prFindIndexOfFirstNonWhiteSpace(string));
-
-
-	}
+^string.drop(this.prFindIndexOfFirstNonWhiteSpace(string));
 
 
+}
 
-	*/
- // end of Class code
+
+
+*/
+// end of Class code
 
 
 

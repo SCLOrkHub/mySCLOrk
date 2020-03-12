@@ -77,7 +77,7 @@ SynthDef.new("playBuf", { arg bufnum, startPos = 0, amp = 0.5, gate = 1, rate = 
 // I'll use the button number as the Pbindef name
 (
 Pbindef(\36,
-	\instrument, "werkit",
+	\instrument, "playBuf",
 	\dur, 0.5,
 	\bufnum, ~samples[1],
 	\amp, 0.5,
@@ -85,7 +85,7 @@ Pbindef(\36,
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\37,
-	\instrument, "werkit",
+	\instrument, "playBuf",
 	\dur, Pseq([Rest(1), 1], inf),
 	\bufnum, ~samples[2],
 	\amp, 0.5,
@@ -93,7 +93,7 @@ Pbindef(\37,
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\38,
-	\instrument, "werkit",
+	\instrument, "playBuf",
 	\dur, Pseq([1, 1, 0.75, 0.5, 0.25, 0.5], inf),
 	\bufnum, ~samples[7],
 	\amp, 0.3,
@@ -101,7 +101,7 @@ Pbindef(\38,
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\39,
-	\instrument, "werkit",
+	\instrument, "playBuf",
 	\dur, Prand([
 		Pseq([Rest(1/2), 1/2], 4),
 		Pshuf([Rest(0.5), 0.25, 0.25, Rest(0.5), 0.5, Rest(0.5), 0.5], 1)
@@ -112,7 +112,7 @@ Pbindef(\39,
 ).play(~clock, quant: 4).quant = 4;
 
 Pbindef(\40,
-	\instrument, "werkit",
+	\instrument, "playBuf",
 	\dur, Prand([
 		Pseq([Rest(1/2), 1/2], 4),
 		Pshuf([Rest(0.5), 0.25, 0.25, Rest(0.5), 0.5, Rest(0.5), 0.5], 1)

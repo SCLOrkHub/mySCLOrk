@@ -47,7 +47,7 @@ Ndef(\superweirdidek, {
 }).play;
 )
 
-Ndef(\superWeirdAmp, { DC.kr(0.3) });
+
 
 
 // darker strings!!!
@@ -70,8 +70,8 @@ Ndef(\wow, {
 Ndef(\wow).fadeTime = 8;
 Ndef(\wow, {
 	var snd, harmonic, vibratoSpeed;
-	harmonic = [1, 1.001, 0.99, 2, 2.01, 4, 8];// * MouseX.kr(-2, 10);
-	vibratoSpeed = [1, 1.1, 1.2, 1.5, 1.12, 0.9] * 20; // the 10 changes speed
+	harmonic = [1, 1.001, 0.99, 2, 2.01, 4, 8] * MouseX.kr(1, 2);
+	vibratoSpeed = [1, 1.1, 1.2, 1.5, 1.12, 0.9] * 10; // the 10 changes speed
 
 	harmonic = harmonic * SinOsc.ar(vibratoSpeed).range(0.8, 1.2);
 	snd = Saw.ar(
@@ -98,4 +98,7 @@ Ndef(\wow, {
 }).play;
 )
 
-Ndef(\wowAmp, { DC.kr(0.3) });
+(
+Ndef(\superWeirdAmp, { DC.kr(0.4) });
+Ndef(\wowAmp, { DC.kr(0.7) });
+)

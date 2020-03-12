@@ -1,5 +1,6 @@
 SCLOrkChat.new("aastha");
 
+(
 b = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/children-laughing1.wav");
 g = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/goodnight2.wav");
 h = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/highlaughing.wav");
@@ -10,6 +11,7 @@ u = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/i hate u.wav");
 m = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/midtermq.wav");
 o = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/money.wav");
 x = Buffer.read(s, "/home/sclork/Music/mySCLOrk/Aastha/good_enough.wav");
+)
 
 // noonan's goodnight:
 (
@@ -38,54 +40,6 @@ Ndef(\goodnight, {
 }).play;
 )
 Ndef(\goodnight).clear(60);
-
-
-// bass sound
-(
-Ndef(\a).fadeTime = 1;
-Ndef(\a, {
-	SinOsc.ar(
-		freq: 40, //* MouseX.kr(0.5, 2),
-		mul: SinOsc.ar(1).range(0, 1) //* Pulse.ar(4) * MouseX.kr(1, 12)
-	)
-}).play;
-
-)
-
-// PLAY STRINGS IN OTHER FILE!!
-
-
-// //strings
-// (
-// Ndef(\wow).fadeTime = 8;
-// Ndef(\wow, {
-// 	var snd, harmonic;
-// 	harmonic = ([1, 1.001, 0.99, 2, 4, 8] + 20)* SinOsc.ar(1).range(0.99, 1.01);
-// 	snd = Saw.ar(
-// 		freq: harmonic * 20 * 2, // < let's finish on the tonic, 1 or 2 harmonic
-// 		mul: 0.1//SinOsc.ar([1/5, 1/2, 1/5, 1/2, 5]).range(0.1, 0.5)*[0.1, 1, 1, 0.8, 0.4,0.9]
-//
-// 	);
-// 	snd = FreeVerb.ar(snd, 0.5, 0.5, 0.5);
-// 	snd = Limiter.ar(Mix.ar(snd))
-// }).play;
-// )
-//
-//
-//
-// //darker strings
-// (
-// Ndef(\wow).fadeTime = 8;
-// Ndef(\wow, {
-// 	var snd, harmonic;
-// 	harmonic = [1, 1.001, 0.99, 2, 4, 8] * SinOsc.ar(1).range(0.99, 1.01);
-// 	snd = Saw.ar(
-// 		freq: harmonic * 20 * 2, // < let's finish on the tonic, 1 or 2 harmonic
-// 		mul: SinOsc.ar([1/5, 1/2, 1/5, 1/2, 5]).range(0.1, 0.5)*[0.1, 1, 1, 0.8, 0.4, 0.9]
-// 	);
-// 	snd = Limiter.ar(Mix.ar(snd))
-// }).play;
-// )
 
 // creepy laughter 1 -- high
 (
@@ -257,7 +211,7 @@ Ndef(\mic, {
 }).play;
 )
 
-Ndef(\mic).stop;
+Ndef(\mic).clear(20);
 
 // STOP EVERYTHING THAT IS PLAYING!!!!
 Ndef.clear(20);
@@ -284,5 +238,6 @@ Ndef(\alarm, {
 )
 
 Ndef(\alarm).clear(30); // done yo
+
 
 

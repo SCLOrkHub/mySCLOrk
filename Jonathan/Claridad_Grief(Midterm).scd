@@ -31,7 +31,7 @@ SCLOrkChat.new("Jonathan");
 // short percussive bursts of sound
 // perhaps like something is going to start, but stops abruptly
 
-
+// ADD BEATINGS
 
 (
 Ndef(\denial).fadeTime = 2;
@@ -200,8 +200,8 @@ Ndef(\depression2, {
 
 
 (
-Ndef(\depression).fadeTime = 2;
-Ndef(\depression, {
+Ndef(\depression2).fadeTime = 2;
+Ndef(\depression2, {
 	var snd, env, freq, harmonics;
 
 	harmonics = [1, 2.2, 3.4, 4.6, 5.8, 7];

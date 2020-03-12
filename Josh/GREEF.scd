@@ -1,10 +1,12 @@
+SCLOrkChat.new;
+
 (//depression
-Ndef(\greef).fadeTime = 1;
+Ndef(\greef).fadeTime = 0;
 Ndef(\greef, {
 var env, snd, delFreq;
 delFreq = SinOsc.ar(0.1).range(15, 18);
 env = Env.perc(attackTime: 0.02, releaseTime: 0.25, curve: -6).ar;
-	snd = SinOsc.ar(freq: 240 * 3, mul: env);
+	snd = SinOsc.ar(freq: 240 * 8, mul: env);
 snd = CombL.ar(in: snd, maxdelaytime: 0.5, delaytime: 1/delFreq, decaytime: 5);
 snd = snd * Line.ar(start: 0, end: 5 * pi, dur: 0.75);
 snd = SinOsc.ar(freq: 0, phase: snd.mod(2pi));
@@ -27,7 +29,7 @@ snd = FreeVerb.ar(snd, 0.5, 0.2);
 )
 
 (//denial
-Ndef(\greef).fadeTime = 5;
+Ndef(\greef).fadeTime = 8;
 Ndef(\greef, {
 var snd, snda, sndb, osc, env, freq;
 
@@ -68,8 +70,9 @@ Ndef(\greef).fadeTime = 2;
 Ndef(\greef, {
 	var snd, freq, env;
 
-	snd = LFPulse.ar([60, 60 * 2.pow(7/12), 60 * 2.pow(11/11)] * [6, 12] * 3);
-	snd = RLPF.ar(snd, LFNoise0.ar(8).range(120, 2400), 0.15, Slew.ar(LFClipNoise.ar(3), 100, 100));
+	//snd = LFPulse.ar([60, 60 * 2.pow(LFNoise0.ar(6).range(1, 16)/12), 60 * 2.pow(11/13)] * [6, 17] * 1);
+	snd = LFPulse.ar([60, 60 * 2.pow(LFNoise0.ar(6).range(1, 16)/12)] * 18);
+	snd = RLPF.ar(snd, LFNoise0.ar(12).range(120, 2400), 0.15, Slew.ar(LFClipNoise.ar(3), 100, 100));
 	snd = CombN.ar(snd, 0.5, 0.5, -5);
 
 	snd = Mix.ar(snd);
@@ -126,7 +129,7 @@ Ndef(\greef, {
 	//snd = LFClipNoise.ar([200, 340, 767]);
 	snd = HPF.ar(
 		in: snd,
-		freq: SinOsc.ar(1/3).range(15000, 30000),
+		freq: SinOsc.ar(1/3).range(15000, 960000),
 		mul: 0.3
 	);
 	snd = Mix.ar(snd);
@@ -134,6 +137,7 @@ Ndef(\greef, {
 	snd = snd * env;
 	snd = Mix.ar(snd);
 	snd = FreeVerb.ar(snd, 0.3, 0.5);
-	snd = Limiter.ar(snd);
+	snd = LPF.ar(snd, 360);
+	snd = Limiter.ar(snd * 0.1);
 }).play;
 )

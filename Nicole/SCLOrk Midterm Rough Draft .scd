@@ -39,7 +39,7 @@ SCLOrkChat.new("nicole")
 Ndef(\a).fadeTime = 7;
 Ndef(\a, {
 	var harmonic, snd;
-	harmonic = -1.3; // change this number, anything between 1 to 32, then control + enter
+	harmonic = -1; // change this number, anything between 1 to 32, then control + enter
 	snd = SinOsc.ar(
 		freq: 43 * harmonic,
 		mul: 0.4 // you can also change the volume here
@@ -62,10 +62,10 @@ Ndef(\a, {
         curve: -100// concave or convex shape
         ).kr;
     var snd = LFPulse.ar(
-        freq: 10 * [1, 11, 23, 96, 24],
+        freq: 10 * [1, 11, 23, -96, 24],
         mul: LFSaw.ar(4).range(0, 1)
     );
-    snd = LPF.ar(in: snd, freq: SinOsc.ar(12).range(500, 800));
+    snd = LPF.ar(in: snd, freq: SinOsc.ar(9).range(500, 800));
     snd = Mix.ar(snd);
     snd = Limiter.ar(snd);
 }).play;

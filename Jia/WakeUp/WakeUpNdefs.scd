@@ -36,7 +36,7 @@ Ndef(\childrenlaugh).clear(30);
 (
 Ndef(\musicbox, {
 	arg dry, wet, snd;
-	dry = SoundIn.ar(0);
+	dry = SoundIn.ar([0, 1]);
 	wet = NHHall.ar(
 		in: dry!2,
 		rt60: 4
@@ -49,7 +49,7 @@ Ndef(\musicbox, {
 (
 Ndef(\bagcrackle, {
 	arg dry, wet, snd;
-	dry = SoundIn.ar(0);
+	dry = SoundIn.ar([0, 1]);
 	wet = NHHall.ar(
 		in: dry!2,
 		rt60: 4
@@ -67,7 +67,7 @@ Ndef(\bagcrackle, {
 (
 Ndef(\knock, {
 	arg dry, wet, snd;
-	dry = SoundIn.ar(0);
+	dry = SoundIn.ar([0, 1]);
 	wet = NHHall.ar(
 		in: dry!2,
 		rt60: 4

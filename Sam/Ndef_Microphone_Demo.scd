@@ -29,7 +29,7 @@ Ndef(\mic, {
 (
 Ndef(\mic, {
 	arg dry, wet, snd;
-	dry = SoundIn.ar(0);
+	dry = SoundIn.ar([0, 1]);
 	wet = NHHall.ar(
 		in: dry!2,
 		rt60: 4
@@ -44,7 +44,7 @@ Ndef(\mic, {
 (
 Ndef(\mic, {
 	arg dry, wet, snd;
-	dry = SoundIn.ar(0);
+	dry = SoundIn.ar([0, 1]);
 	wet = NHHall.ar(
 		in: dry!2,
 		rt60: 4
@@ -53,8 +53,8 @@ Ndef(\mic, {
 	snd = snd + CombC.ar(
 		in: snd,
 		maxdelaytime: 1,
-		delaytime: 15/60 , // < play wneith this number
-		decaytime: 20 // < and this number
+		delaytime: 30/60 , // < play wneith this number
+		decaytime: 15 // < and this number
 	);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;
@@ -67,17 +67,17 @@ Ndef(\mic, {
 (
 Ndef(\mic, {
 	arg dry, wet, snd;
-	dry = SoundIn.ar(0);
+	dry = SoundIn.ar([0, 1]);
 	wet = NHHall.ar(
 		in: dry!2,
 		rt60: 4
 	);
-	snd = (dry * 1.0) + (wet * 0.3);
+	snd = (dry * 1.0) + (wet * 0.6);
 	snd = snd + CombC.ar(
 		in: snd,
 		maxdelaytime: 1,
 		delaytime: 0.03, // < play with this number
-		decaytime: 40 // < and this number
+		decaytime: 2 // < and this number
 	);
 	snd = Limiter.ar(Mix.ar(snd));
 }).play;

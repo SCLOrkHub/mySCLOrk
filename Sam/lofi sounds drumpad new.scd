@@ -107,7 +107,7 @@ Pbindef(\41,
 	\instrument, "playBuf",
 	\dur, 8,
 	\bufnum, ~samples[0],
-	\amp, 0.5,
+	\amp, 1.0,
 	\rate, 1
 ).play(~clock, quant: 4).quant = 4;
 
